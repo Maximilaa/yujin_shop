@@ -50,24 +50,39 @@
         }
 
         /* Navigation */
+
+        .nav-wrapper, .secondary-nav-wrapper {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            position: sticky;
+            z-index: 1000;
+        }
+
+        .nav-wrapper {
+            backdrop-filter: blur(20px);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            top: 0; /* Makes the top nav sticky */
+        }
+
+        .secondary-nav-wrapper {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            top: 70px; /* Adjust based on the height of the top nav */
+        }
+
+        /* Top Navigation Bar */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            border-radius: 0;
-            margin: 0;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
             min-height: 70px;
+            width: 100%;
+            max-width: 1200px; /* Aligns content with the rest of the page */
+            margin: 0 auto;
+            padding: 0 20px; /* Consistent padding */
         }
-
+        
         .nav-left {
             flex: 1;
             display: flex;

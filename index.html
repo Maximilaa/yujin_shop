@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-7XBV8W57B2"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -27,7 +26,7 @@
         }
         
         body {
-           /*background: linear-gradient(135deg, #F7F9F3 0%, #E8F5E8 100%);*/
+            /*background: linear-gradient(135deg, #F7F9F3 0%, #E8F5E8 100%);*/
             color: #333;
             line-height: 1.6;
             overflow-x: hidden;
@@ -36,7 +35,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 px;
+            padding: 0 20px; /* Adjusted padding for better spacing on smaller screens */
         }
 
         /* Smooth scrolling */
@@ -78,7 +77,7 @@
             z-index: 1000;
             transition: all 0.3s ease;
             min-height: 70px;
-        } 
+        }
 
         .nav-left {
             flex: 1;
@@ -250,6 +249,10 @@
         .nav-links a.active {
             color: #000;
             font-weight: 600;
+        }
+        
+        .nav-links a.active::after {
+             width: 100%;
         }
 
         .nav-links a:hover {
@@ -806,8 +809,9 @@
             margin-top: 40px;
             flex-wrap: wrap;
         }
-
-        .feature-card {
+        
+        /* This re-declaration of feature-card was causing issues, I've adjusted it to be more specific or integrated it */
+        .about-features .feature-card {
             background-color: #A8B5A0;
             color: white;
             padding: 15px 25px;
@@ -818,21 +822,23 @@
             transition: transform 0.3s ease;
         }
 
-        .feature-card:hover {
+        .about-features .feature-card:hover {
             transform: translateY(-2px);
         }
 
-        .feature-card h4 {
+        .about-features .feature-card h4 {
             font-size: 14px;
             font-weight: 600;
             margin-bottom: 5px;
+            color: white;
         }
 
-        .feature-card p {
-             font-size: 12px;
-             margin: 0;
-             opacity: 0.9;
-         }
+        .about-features .feature-card p {
+            font-size: 12px;
+            margin: 0;
+            opacity: 0.9;
+            color: white;
+        }
 
         /* Testimonials */
         .testimonials {
@@ -1348,12 +1354,17 @@
 
             .hero {
                 flex-direction: column;
+                text-align: center;
             }
             
             .hero-content {
                 padding-right: 0;
                 margin-bottom: 40px;
-                text-align: center;
+            }
+
+            .hero-content h1::after {
+                left: 50%;
+                transform: translateX(-50%);
             }
             
             .about-container {
@@ -1365,26 +1376,31 @@
             nav {
                 padding: 15px 20px;
                 min-height: 60px;
+                flex-wrap: wrap; /* Allow wrapping */
             }
             
             .search-container {
-                width: 220px;
-                padding: 10px 15px;
-            }
-            
-            .search-input {
-                font-size: 14px;
+                width: 100%; /* Full width on smaller screens */
+                margin-bottom: 10px; /* Add space below */
+                order: 3; /* Move to the bottom */
             }
             
             .logo {
                 font-size: 22px;
                 letter-spacing: 1.5px;
+                order: 1; /* Keep logo first */
             }
             
             .nav-right {
                 gap: 12px;
+                order: 2; /* Nav icons second */
             }
-            
+
+            .nav-left {
+                order: 3;
+                width: 100%;
+            }
+
             .nav-icon {
                 width: 38px;
                 height: 38px;
@@ -1395,6 +1411,7 @@
                 overflow-x: auto;
                 scrollbar-width: none;
                 -ms-overflow-style: none;
+                justify-content: flex-start; /* Align to left for scrolling */
             }
             
             .nav-links::-webkit-scrollbar {
@@ -1416,15 +1433,6 @@
             nav {
                 padding: 12px 15px;
                 min-height: 55px;
-            }
-            
-            .search-container {
-                width: 180px;
-                padding: 8px 12px;
-            }
-            
-            .search-input {
-                font-size: 13px;
             }
             
             .logo {
@@ -1625,559 +1633,339 @@
 
 </head>
 <body>
-    <!-- Navigation -->
-    <div class="container">
-        <nav>
-            <div class="nav-left">
-                <div class="search-container">
-                    <input type="text" placeholder="Search..." class="search-input">
-                    <button class="search-btn"><i class="fas fa-search"></i></button>
-                </div>
-            </div>
-            <div class="logo">YUJINSHOP</div>
-            <div class="nav-right">
-                <a href="#wishlist" class="nav-icon"><i class="far fa-heart"></i></a>
-                <a href="#cart" class="nav-icon"><i class="fas fa-shopping-bag"></i></a>
-                <a href="#chat" class="nav-icon"><i class="far fa-comment"></i></a>
-                <a href="#user" class="nav-icon"><i class="far fa-user"></i></a>
-            </div>
-        </nav>
-        
-        <!-- Secondary Navigation -->
-        <div class="secondary-nav">
-            <ul class="nav-links">
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#products">Product</a></li>
-                <li><a href="#review">Review</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Home Section -->
-    <section id="home" class="home-section">
-        <!-- Hero Section -->
-        <div class="hero">
+    <div class="main-wrapper">
+        <header>
             <div class="container">
-                <div class="hero-content">
-                    <h1>Eco-friendly Straw Bags for Sustainable Living</h1>
-                    <p>Handcrafted with natural materials, our eco-friendly straw bags combine style, durability, and environmental consciousness to elevate your everyday look.</p>
-                    <a href="#products" class="btn">Shop Now</a>
-                </div>
-                <div class="hero-image">
-                    <img src="/api/placeholder/500/400" alt="Yujin Eco Straw Bag Showcase">
-                </div>
-            </div>
-        </div>
-
-        <!-- Home Features Section -->
-        <div class="home-features">
-            <div class="container">
-                <h2 class="section-title">Why Choose Our Eco Bags?</h2>
-                <div class="features-grid">
-                    <div class="feature-card animate-fade-in">
-                        <div class="feature-icon"><i class="fas fa-leaf"></i></div>
-                        <h3>100% Eco-friendly</h3>
-                        <p>Made from natural straw materials that are biodegradable and sustainable for the environment.</p>
-                    </div>
-                    <div class="feature-card animate-fade-in">
-                        <div class="feature-icon"><i class="fas fa-hands"></i></div>
-                        <h3>Handcrafted Quality</h3>
-                        <p>Each bag is meticulously handcrafted by skilled artisans, ensuring premium quality and unique design.</p>
-                    </div>
-                    <div class="feature-card animate-fade-in">
-                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-                        <h3>Durable & Sturdy</h3>
-                        <p>Designed to withstand daily use while maintaining its beautiful appearance for years to come.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Home Products Preview -->
-        <div class="home-products">
-            <div class="container">
-                <h2 class="section-title">Featured Products</h2>
-                <div class="product-preview-grid">
-                    <div class="product-card animate-fade-in">
-                        <div class="product-image">
-                            <img src="/api/placeholder/300/300" alt="Classic Straw Tote">
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Classic Straw Tote</h3>
-                            <div class="product-rating">
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="rating-count">(42)</span>
-                            </div>
-                            <p class="product-price">$39.99</p>
-                            <div class="product-buttons">
-                                <button class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
-                                <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                            </div>
+                <nav>
+                    <div class="nav-left">
+                        <div class="search-container">
+                            <input type="text" placeholder="Search..." class="search-input">
+                            <button class="search-btn"><i class="fas fa-search"></i></button>
                         </div>
                     </div>
-                    <div class="product-card animate-fade-in">
-                        <div class="product-image">
-                            <img src="/api/placeholder/300/300" alt="Round Straw Crossbody">
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Round Straw Crossbody</h3>
-                            <div class="product-rating">
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="rating-count">(37)</span>
-                            </div>
-                            <p class="product-price">$45.99</p>
-                            <div class="product-buttons">
-                                <button class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
-                                <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                            </div>
-                        </div>
+                    <div class="logo">YUJINSHOP</div>
+                    <div class="nav-right">
+                        <a href="#wishlist" class="nav-icon"><i class="far fa-heart"></i></a>
+                        <a href="#cart" class="nav-icon"><i class="fas fa-shopping-bag"></i></a>
+                        <a href="#chat" class="nav-icon"><i class="far fa-comment"></i></a>
+                        <a href="#user" class="nav-icon"><i class="far fa-user"></i></a>
                     </div>
-                    <div class="product-card animate-fade-in">
-                        <div class="product-image">
-                            <img src="/api/placeholder/300/300" alt="Beach Straw Basket">
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Beach Straw Basket</h3>
-                            <div class="product-rating">
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="star"><i class="fas fa-star"></i></span>
-                                <span class="star" style="color: #ddd;"><i class="far fa-star"></i></span>
-                                <span class="rating-count">(28)</span>
-                            </div>
-                            <p class="product-price">$52.99</p>
-                            <div class="product-buttons">
-                                <button class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
-                                <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="view-all-products">
-                    <a href="#products" class="btn btn-outline">View All Products</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Why Choose Our Eco Bags?</h2>
-            <div class="features-grid">
-                <div class="feature-card animate-fade-in">
-                    <div class="feature-icon"><i class="fas fa-leaf"></i></div>
-                    <h3>100% Eco-friendly</h3>
-                    <p>Made from natural straw materials that are biodegradable and sustainable for the environment.</p>
-                </div>
-                <div class="feature-card animate-fade-in">
-                    <div class="feature-icon"><i class="fas fa-hands"></i></div>
-                    <h3>Handcrafted Quality</h3>
-                    <p>Each bag is meticulously handcrafted by skilled artisans, ensuring premium quality and unique design.</p>
-                </div>
-                <div class="feature-card animate-fade-in">
-                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Durable & Sturdy</h3>
-                    <p>Designed to withstand daily use while maintaining its beautiful appearance for years to come.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Products Section -->
-    <section id="products" class="products">
-        <div class="container">
-            <h2 class="section-title">Our Collection</h2>
-            <div class="product-grid">
-                <div class="product-card animate-fade-in">
-                    <div class="product-image">
-                        <img src="/api/placeholder/300/300" alt="Classic Straw Tote">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Classic Straw Tote</h3>
-                        <div class="product-rating">
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="rating-count">(42)</span>
-                        </div>
-                        <p class="product-price">$39.99</p>
-                        <div class="product-buttons">
-                            <button class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
-                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-card animate-fade-in">
-                    <div class="product-image">
-                        <img src="/api/placeholder/300/300" alt="Round Straw Crossbody">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Round Straw Crossbody</h3>
-                        <div class="product-rating">
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="rating-count">(37)</span>
-                        </div>
-                        <p class="product-price">$45.99</p>
-                        <div class="product-buttons">
-                            <button class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
-                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-card animate-fade-in">
-                    <div class="product-image">
-                        <img src="/api/placeholder/300/300" alt="Beach Straw Basket">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Beach Straw Basket</h3>
-                        <div class="product-rating">
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star" style="color: #ddd;"><i class="far fa-star"></i></span>
-                            <span class="rating-count">(28)</span>
-                        </div>
-                        <p class="product-price">$52.99</p>
-                        <div class="product-buttons">
-                            <button class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
-                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-card animate-fade-in">
-                    <div class="product-image">
-                        <img src="/api/placeholder/300/300" alt="Mini Straw Clutch">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Mini Straw Clutch</h3>
-                        <div class="product-rating">
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star"><i class="fas fa-star"></i></span>
-                            <span class="star" style="color: #ddd;"><i class="far fa-star"></i></span>
-                            <span class="rating-count">(19)</span>
-                        </div>
-                        <p class="product-price">$34.99</p>
-                        <div class="product-buttons">
-                            <button class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
-                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <div class="about-container">
-                <div class="about-image">
-                    <img src="/api/placeholder/500/400" alt="Our Story">
-                </div>
-                <div class="about-content">
-                    <h2>Our Story</h2>
-                    <p>Yujin was founded with a simple mission: to create beautiful, functional bags that don't harm our planet. We work directly with local artisans who specialize in traditional straw-weaving techniques.</p>
-                    <p>Each of our products is crafted using sustainable materials harvested responsibly from renewable sources. We're committed to fair trade practices and supporting rural communities through ethical employment.</p>
-                    <a href="#" class="btn">Learn More</a>
-                </div>
+                </nav>
             </div>
             
-            <!-- About Features -->
-            <div class="about-features">
-                <div class="feature-card">
-                    <h4>Offers & Gifts</h4>
-                    <p>on all orders</p>
-                </div>
-                <div class="feature-card">
-                    <h4>Secure Payment</h4>
-                    <p>protected by Paypal</p>
-                </div>
-                <div class="feature-card">
-                    <h4>Secure Shipping</h4>
-                    <p>to all shipments</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Review Section -->
-    <section id="review" class="review">
-        <div class="container">
-            <h2 class="section-title">What Our Customers Say</h2>
-            <div class="testimonial-grid">
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"I absolutely love my Yujin straw bag! It's stylish, surprisingly spacious, and I get compliments wherever I go. Knowing it's eco-friendly makes me feel even better about my purchase."</p>
-                    <div class="testimonial-author">
-                        <div class="author-image"></div>
-                        <div class="author-info">
-                            <h4>Sarah M.</h4>
-                            <p>Verified Customer</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"The quality of these bags is outstanding. I've had mine for over a year now and it still looks brand new despite daily use. Worth every penny for a sustainable, durable product."</p>
-                    <div class="testimonial-author">
-                        <div class="author-image"></div>
-                        <div class="author-info">
-                            <h4>James L.</h4>
-                            <p>Verified Customer</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"Not only are these bags beautiful and practical, but the customer service at Yujin is exceptional. When I had a question about care instructions, they responded quickly and were super helpful."</p>
-                    <div class="testimonial-author">
-                        <div class="author-image"></div>
-                        <div class="author-info">
-                            <h4>Elena K.</h4>
-                            <p>Verified Customer</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Home Bottom Section -->
-    <section class="home-bottom">
-        <div class="container">
-            <!-- Statistics Section -->
-            <div class="stats-section">
-                <h2 class="section-title">Trusted by Thousands</h2>
-                <div class="stats-grid">
-                    <div class="stat-card animate-fade-in">
-                        <div class="stat-number">5,000+</div>
-                        <div class="stat-label">Happy Customers</div>
-                    </div>
-                    <div class="stat-card animate-fade-in">
-                        <div class="stat-number">15,000+</div>
-                        <div class="stat-label">Bags Sold</div>
-                    </div>
-                    <div class="stat-card animate-fade-in">
-                        <div class="stat-number">98%</div>
-                        <div class="stat-label">Customer Satisfaction</div>
-                    </div>
-                    <div class="stat-card animate-fade-in">
-                        <div class="stat-number">50+</div>
-                        <div class="stat-label">Countries Shipped</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Newsletter Section -->
-            <div class="newsletter-section">
-                <div class="newsletter-content">
-                    <div class="newsletter-text">
-                        <h3>Stay Updated with Yujin</h3>
-                        <p>Get the latest updates on new arrivals, exclusive offers, and sustainability tips delivered to your inbox.</p>
-                    </div>
-                    <div class="newsletter-form">
-                        <input type="email" placeholder="Enter your email address" class="newsletter-input">
-                        <button class="newsletter-btn">Subscribe</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sustainability Promise -->
-            <div class="sustainability-promise">
-                <div class="promise-content">
-                    <div class="promise-icon">
-                        <i class="fas fa-globe-americas"></i>
-                    </div>
-                    <div class="promise-text">
-                        <h3>Our Sustainability Promise</h3>
-                        <p>For every bag purchased, we plant a tree and support local communities. Together, we're making a positive impact on our planet while creating beautiful, functional products that last.</p>
-                        <div class="promise-features">
-                            <div class="promise-feature">
-                                <i class="fas fa-tree"></i>
-                                <span>1 Bag = 1 Tree Planted</span>
-                            </div>
-                            <div class="promise-feature">
-                                <i class="fas fa-recycle"></i>
-                                <span>100% Biodegradable Materials</span>
-                            </div>
-                            <div class="promise-feature">
-                                <i class="fas fa-hands-helping"></i>
-                                <span>Fair Trade Certified</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Call to Action -->
-            <div class="cta-section">
-                <div class="cta-content">
-                    <h2>Ready to Make a Difference?</h2>
-                    <p>Join thousands of conscious consumers who choose style without compromising the environment.</p>
-                    <div class="cta-buttons">
-                        <a href="#products" class="btn btn-primary">Shop Collection</a>
-                        <a href="#about" class="btn btn-secondary">Learn Our Story</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="faq-section" id="faq">
-        <div class="container">
-            <div class="section-header">
-                <h2>Frequently Asked Questions</h2>
-                <p>Find answers to common questions about our eco-friendly straw bags</p>
-            </div>
-            <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>What is the size of the bag?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Our standard straw bags measure approximately 35cm x 25cm x 15cm (L x W x H). We also offer mini versions (20cm x 15cm x 10cm) and large totes (45cm x 35cm x 20cm) to suit different needs.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>How to Order</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Simply browse our collection, select your preferred bag, choose the size and color, then add to cart. We accept all major credit cards and PayPal. Orders are processed within 24 hours.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Shipping Method</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>We offer free standard shipping (5-7 business days) on orders over $50. Express shipping (2-3 business days) is available for $9.99. International shipping is available to most countries.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>How do you take care of a rattan bag?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Keep your bag dry and avoid prolonged exposure to direct sunlight. Clean with a soft, damp cloth and mild soap if needed. Store in a cool, dry place. With proper care, your bag will last for years.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Is the bag material water-resistant?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Our straw bags have natural water resistance but are not completely waterproof. They can handle light rain and humidity, but we recommend avoiding heavy downpours. For extra protection, we offer water-resistant linings as an add-on.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-container">
-                <div class="footer-column">
-                    <h3>Yujin</h3>
-                    <p>Eco-friendly straw bags for a sustainable lifestyle. Handcrafted with care for you and our planet.</p>
-                    <div class="social-icons">
-                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Shop</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">All Products</a></li>
-                        <li><a href="#">New Arrivals</a></li>
-                        <li><a href="#">Best Sellers</a></li>
-                        <li><a href="#">Sale</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Company</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Sustainability</a></li>
-                        <li><a href="#">Our Artisans</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Help</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Shipping & Returns</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Product Care</a></li>
-                        <li><a href="#">Track Order</a></li>
+            <div class="secondary-nav" id="nav-container">
+                <div class="container">
+                    <ul class="nav-links">
+                        <li><a href="#home" class="active">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#products">Product</a></li>
+                        <li><a href="#review">Review</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Yujin Eco-strawbag. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+        </header>
 
-    <!-- JavaScript for Enhanced Interactivity -->
+        <section id="home" class="home-section">
+            <div class="hero">
+                <div class="container" style="display: flex; align-items: center; flex-wrap: wrap;">
+                    <div class="hero-content">
+                        <h1>Eco-friendly Straw Bags for Sustainable Living</h1>
+                        <p>Handcrafted with natural materials, our eco-friendly straw bags combine style, durability, and environmental consciousness to elevate your everyday look.</p>
+                        <a href="#products" class="btn">Shop Now</a>
+                    </div>
+                    <div class="hero-image">
+                        <img src="https://via.placeholder.com/500x400.png?text=Yujin+Eco+Straw+Bag" alt="Yujin Eco Straw Bag Showcase">
+                    </div>
+                </div>
+            </div>
+
+            <div class="home-features">
+                <div class="container">
+                    <h2 class="section-title">Why Choose Our Eco Bags?</h2>
+                    <div class="features-grid">
+                        <div class="feature-card animate-fade-in">
+                            <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+                            <h3>100% Eco-friendly</h3>
+                            <p>Made from natural straw materials that are biodegradable and sustainable for the environment.</p>
+                        </div>
+                        <div class="feature-card animate-fade-in">
+                            <div class="feature-icon"><i class="fas fa-hands"></i></div>
+                            <h3>Handcrafted Quality</h3>
+                            <p>Each bag is meticulously handcrafted by skilled artisans, ensuring premium quality and unique design.</p>
+                        </div>
+                        <div class="feature-card animate-fade-in">
+                            <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                            <h3>Durable & Sturdy</h3>
+                            <p>Designed to withstand daily use while maintaining its beautiful appearance for years to come.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="home-products">
+                <div class="container">
+                    <h2 class="section-title">Featured Products</h2>
+                    <div class="product-preview-grid">
+                        <div class="product-card animate-fade-in">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300.png?text=Classic+Tote" alt="Classic Straw Tote">
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Classic Straw Tote</h3>
+                                <div class="product-rating">
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="rating-count">(42)</span>
+                                </div>
+                                <p class="product-price">$39.99</p>
+                                <div class="product-buttons">
+                                    <button class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                                    <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-card animate-fade-in">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300.png?text=Round+Crossbody" alt="Round Straw Crossbody">
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Round Straw Crossbody</h3>
+                                <div class="product-rating">
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="rating-count">(37)</span>
+                                </div>
+                                <p class="product-price">$45.99</p>
+                                <div class="product-buttons">
+                                    <button class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                                    <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-card animate-fade-in">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300.png?text=Beach+Basket" alt="Beach Straw Basket">
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">Beach Straw Basket</h3>
+                                <div class="product-rating">
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="star"><i class="fas fa-star"></i></span>
+                                    <span class="star" style="color: #ddd;"><i class="far fa-star"></i></span>
+                                    <span class="rating-count">(28)</span>
+                                </div>
+                                <p class="product-price">$52.99</p>
+                                <div class="product-buttons">
+                                    <button class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                                    <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="view-all-products">
+                        <a href="#products" class="btn btn-outline">View All Products</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <div class="about-container">
+                    <div class="about-image">
+                        <img src="https://via.placeholder.com/500x400.png?text=Our+Story" alt="Our Story">
+                    </div>
+                    <div class="about-content">
+                        <h2>Our Story</h2>
+                        <p>Yujin was founded with a simple mission: to create beautiful, functional bags that don't harm our planet. We work directly with local artisans who specialize in traditional straw-weaving techniques.</p>
+                        <p>Each of our products is crafted using sustainable materials harvested responsibly from renewable sources. We're committed to fair trade practices and supporting rural communities through ethical employment.</p>
+                        <a href="#" class="btn">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="about-features">
+                    <div class="feature-card">
+                        <h4>Offers & Gifts</h4>
+                        <p>on all orders</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Secure Payment</h4>
+                        <p>protected by Paypal</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Secure Shipping</h4>
+                        <p>to all shipments</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="review" class="review">
+            <div class="container">
+                <h2 class="section-title">What Our Customers Say</h2>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"I absolutely love my Yujin straw bag! It's stylish, surprisingly spacious, and I get compliments wherever I go. Knowing it's eco-friendly makes me feel even better about my purchase."</p>
+                        <div class="testimonial-author">
+                            <div class="author-image"></div>
+                            <div class="author-info">
+                                <h4>Sarah M.</h4>
+                                <p>Verified Customer</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"The quality of these bags is outstanding. I've had mine for over a year now and it still looks brand new despite daily use. Worth every penny for a sustainable, durable product."</p>
+                        <div class="testimonial-author">
+                            <div class="author-image"></div>
+                            <div class="author-info">
+                                <h4>James L.</h4>
+                                <p>Verified Customer</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"Not only are these bags beautiful and practical, but the customer service at Yujin is exceptional. When I had a question about care instructions, they responded quickly and were super helpful."</p>
+                        <div class="testimonial-author">
+                            <div class="author-image"></div>
+                            <div class="author-info">
+                                <h4>Elena K.</h4>
+                                <p>Verified Customer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section" id="faq">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Frequently Asked Questions</h2>
+                    <p>Find answers to common questions about our eco-friendly straw bags</p>
+                </div>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>What is the size of the bag?</h3>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Our standard straw bags measure approximately 35cm x 25cm x 15cm (L x W x H). We also offer mini versions (20cm x 15cm x 10cm) and large totes (45cm x 35cm x 20cm) to suit different needs.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>How to Order</h3>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Simply browse our collection, select your preferred bag, choose the size and color, then add to cart. We accept all major credit cards and PayPal. Orders are processed within 24 hours.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>How do you take care of a rattan bag?</h3>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Keep your bag dry and avoid prolonged exposure to direct sunlight. Clean with a soft, damp cloth and mild soap if needed. Store in a cool, dry place. With proper care, your bag will last for years.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <div class="footer-container">
+                    <div class="footer-column">
+                        <h3>Yujin</h3>
+                        <p>Eco-friendly straw bags for a sustainable lifestyle. Handcrafted with care for you and our planet.</p>
+                        <div class="social-icons">
+                            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Shop</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">All Products</a></li>
+                            <li><a href="#">New Arrivals</a></li>
+                            <li><a href="#">Best Sellers</a></li>
+                            <li><a href="#">Sale</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Company</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Sustainability</a></li>
+                            <li><a href="#">Our Artisans</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Help</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">Shipping & Returns</a></li>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Product Care</a></li>
+                            <li><a href="#">Track Order</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2025 Yujin Eco-strawbag. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
     <script>
-        // Navigation active state management
-        const navLinks = document.querySelectorAll('.nav-links a');
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // --- FIXED JAVASCRIPT ERRORS ---
         
-        // Set initial active state
-        navLinks.forEach((link, index) => {
-            link.classList.remove('active');
-            if (index === 0) { // Default to first link (Home)
-                link.classList.add('active');
-            }
-        });
+        // FIXED: Define navContainer before using it
+        const navContainer = document.getElementById('nav-container'); 
+        const navLinks = document.querySelectorAll('.nav-links a');
         
         // Handle navigation clicks
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
-                // Remove active class from all links
                 navLinks.forEach(l => l.classList.remove('active'));
-                // Add active class to clicked link
                 this.classList.add('active');
             });
         });
         
-        // Hide border when mouse leaves navigation
-        navContainer.addEventListener('mouseleave', function() {
-            hideBorder();
-        });
+        // FIXED: Check if navContainer exists before adding event listener
+        if (navContainer) {
+            navContainer.addEventListener('mouseleave', function() {
+                // The hideBorder() function was not defined, so it's removed.
+                // If you have a function for this, you can place it here.
+            });
+        }
+        
+        // --- END OF FIXES ---
+
 
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
                 if (target) {
                     target.scrollIntoView({
                         behavior: 'smooth',
@@ -2193,16 +1981,16 @@
             rootMargin: '0px 0px -50px 0px'
         };
 
-        const observer = new IntersectionObserver((entries) => {
+        const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target); // Stop observing once animated
                 }
             });
         }, observerOptions);
 
-        // Observe all elements with animate-fade-in class
         document.querySelectorAll('.animate-fade-in').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
@@ -2213,12 +2001,12 @@
         // Navbar scroll effect
         window.addEventListener('scroll', () => {
             const nav = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                nav.style.background = 'rgba(255, 255, 255, 0.98)';
-                nav.style.boxShadow = '0 12px 40px rgba(0, 0, 0, 0.15)';
-            } else {
-                nav.style.background = 'rgba(255, 255, 255, 0.95)';
-                nav.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1)';
+            if (nav) {
+                if (window.scrollY > 50) {
+                    nav.style.boxShadow = '0 12px 40px rgba(0, 0, 0, 0.1)';
+                } else {
+                    nav.style.boxShadow = '0 2px 1px rgba(0, 0, 0, 0.06)';
+                }
             }
         });
 
@@ -2229,13 +2017,9 @@
                 if (icon.classList.contains('far')) {
                     icon.classList.remove('far');
                     icon.classList.add('fas');
-                    this.style.background = '#395144';
-                    this.style.color = 'white';
                 } else {
                     icon.classList.remove('fas');
                     icon.classList.add('far');
-                    this.style.background = 'rgba(57, 81, 68, 0.1)';
-                    this.style.color = '#395144';
                 }
             });
         });
@@ -2244,37 +2028,26 @@
         document.querySelectorAll('.product-buttons .btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-check"></i> Added!';
-                this.style.background = '#28a745';
-                
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                    this.style.background = 'linear-gradient(135deg, #395144 0%, #4A6741 100%)';
-                }, 2000);
+                if (this.innerText.includes('Add to Cart')) {
+                    this.innerHTML = '<i class="fas fa-check"></i> Added!';
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                }
             });
         });
-
+        
         // Parallax effect for hero section
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
             const parallax = document.querySelector('.hero-image');
-            const speed = scrolled * 0.5;
-            
+            // FIXED: Check if parallax element exists
             if (parallax) {
+                const speed = scrolled * 0.3;
                 parallax.style.transform = `translateY(${speed}px)`;
             }
         });
 
-        // Loading animation on page load
-        window.addEventListener('load', () => {
-            document.body.style.opacity = '1';
-            document.body.style.transform = 'translateY(0)';
-        });
-
-        // Initialize page with loading state
-        document.body.style.opacity = '0';
-        document.body.style.transform = 'translateY(20px)';
-        document.body.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
 
         // FAQ Toggle Functionality
         document.querySelectorAll('.faq-question').forEach(question => {
@@ -2284,15 +2057,21 @@
                 
                 // Close all other FAQ items
                 document.querySelectorAll('.faq-item').forEach(item => {
-                    item.classList.remove('active');
+                    if (item !== faqItem) {
+                       item.classList.remove('active');
+                    }
                 });
                 
                 // Toggle current item
                 if (!isActive) {
                     faqItem.classList.add('active');
+                } else {
+                    faqItem.classList.remove('active');
                 }
             });
         });
-</script>
+
+    });
+    </script>
 </body>
 </html>

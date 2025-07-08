@@ -2046,7 +2046,7 @@
                 cartIcon.style.position = 'relative';
                 cartIcon.appendChild(cartCount);
             }
-            cartCount.textContent = cart.length;
+            cartCount.textContent = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
             if (cart.length === 0) {
                 cartCount.style.display = 'none';
             } else {
@@ -2054,182 +2054,159 @@
             }
         }
 
-        // Show cart dropdown
-        function toggleCartDropdown() {
-            let dropdown = document.getElementById('cart-dropdown');
-            if (!dropdown) {
-                dropdown = document.createElement('div');
-                dropdown.id = 'cart-dropdown';
-                dropdown.style.position = 'absolute';
-                dropdown.style.top = '60px';
-                dropdown.style.right = '0';
-                dropdown.style.width = '300px';
-                dropdown.style.maxHeight = '400px';
-                dropdown.style.overflowY = 'auto';
-                dropdown.style.background = 'white';
-                dropdown.style.border = '1px solid #ccc';
-                dropdown.style.borderRadius = '8px';
-                dropdown.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-                dropdown.style.zIndex = '10000';
-                dropdown.style.padding = '10px';
-                const cartIcon = document.querySelector('.nav-right a[href="#cart"]');
-                cartIcon.style.position = 'relative';
-                cartIcon.appendChild(dropdown);
-            }
-            if (dropdown.style.display === 'block') {
-                dropdown.style.display = 'none';
-            } else {
-                renderCartItems();
-                dropdown.style.display = 'block';
-            }
-        }
+        // Render cart page
+        function renderCartPage() {
+            const mainWrapper = document.querySelector('.main-wrapper');
+            mainWrapper.innerHTML = '';
 
-        // Render cart items in dropdown
-        function renderCartItems() {
-            const dropdown = document.getElementById('cart-dropdown');
-            dropdown.innerHTML = '';
-            if (cart.length === 0) {
-                dropdown.textContent = 'Your cart is empty.';
-                return;
-            }
-
-            // Container for cart content
-            const container = document.createElement('div');
-            container.style.display = 'flex';
-            container.style.justifyContent = 'space-between';
-            container.style.gap = '20px';
+            const cartPage = document.createElement('div');
+            cartPage.style.padding = '40px';
+            cartPage.style.maxWidth = '1200px';
+            cartPage.style.margin = '0 auto';
+            cartPage.style.display = 'flex';
+            cartPage.style.justifyContent = 'space-between';
+            cartPage.style.gap = '40px';
 
             // Left side: Your Bag
             const yourBag = document.createElement('div');
             yourBag.style.flex = '1';
 
-            const yourBagTitle = document.createElement('h3');
+            const yourBagTitle = document.createElement('h2');
             yourBagTitle.textContent = 'Your Bag';
-            yourBagTitle.style.marginBottom = '20px';
+            yourBagTitle.style.marginBottom = '30px';
             yourBagTitle.style.fontWeight = '700';
+            yourBagTitle.style.fontSize = '28px';
             yourBag.appendChild(yourBagTitle);
 
-            cart.forEach((item, index) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.style.display = 'flex';
-                itemDiv.style.alignItems = 'center';
-                itemDiv.style.marginBottom = '20px';
+            if (cart.length === 0) {
+                const emptyMsg = document.createElement('p');
+                emptyMsg.textContent = 'Your cart is empty.';
+                yourBag.appendChild(emptyMsg);
+            } else {
+                cart.forEach((item, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.style.display = 'flex';
+                    itemDiv.style.alignItems = 'center';
+                    itemDiv.style.marginBottom = '30px';
 
-                const img = document.createElement('img');
-                img.src = item.image;
-                img.alt = item.title;
-                img.style.width = '80px';
-                img.style.height = '80px';
-                img.style.objectFit = 'cover';
-                img.style.borderRadius = '10px';
-                img.style.marginRight = '15px';
+                    const img = document.createElement('img');
+                    img.src = item.image;
+                    img.alt = item.title;
+                    img.style.width = '120px';
+                    img.style.height = '120px';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '15px';
+                    img.style.marginRight = '25px';
 
-                const infoDiv = document.createElement('div');
-                infoDiv.style.flex = '1';
+                    const infoDiv = document.createElement('div');
+                    infoDiv.style.flex = '1';
 
-                const title = document.createElement('div');
-                title.textContent = item.title;
-                title.style.fontWeight = '700';
-                title.style.fontSize = '16px';
-                title.style.marginBottom = '10px';
+                    const title = document.createElement('div');
+                    title.textContent = item.title;
+                    title.style.fontWeight = '700';
+                    title.style.fontSize = '20px';
+                    title.style.marginBottom = '15px';
 
-                // Quantity controls
-                const quantityDiv = document.createElement('div');
-                quantityDiv.style.display = 'flex';
-                quantityDiv.style.alignItems = 'center';
-                quantityDiv.style.gap = '10px';
-                quantityDiv.style.marginBottom = '10px';
+                    // Quantity controls
+                    const quantityDiv = document.createElement('div');
+                    quantityDiv.style.display = 'flex';
+                    quantityDiv.style.alignItems = 'center';
+                    quantityDiv.style.gap = '15px';
+                    quantityDiv.style.marginBottom = '15px';
 
-                const quantityLabel = document.createElement('span');
-                quantityLabel.textContent = 'Quantity';
-                quantityLabel.style.fontWeight = '600';
-                quantityLabel.style.marginRight = '10px';
+                    const quantityLabel = document.createElement('span');
+                    quantityLabel.textContent = 'Quantity';
+                    quantityLabel.style.fontWeight = '600';
+                    quantityLabel.style.marginRight = '15px';
 
-                const minusBtn = document.createElement('button');
-                minusBtn.textContent = '-';
-                minusBtn.style.width = '25px';
-                minusBtn.style.height = '25px';
-                minusBtn.style.border = '1px solid #ccc';
-                minusBtn.style.borderRadius = '4px';
-                minusBtn.style.background = 'white';
-                minusBtn.style.cursor = 'pointer';
+                    const minusBtn = document.createElement('button');
+                    minusBtn.textContent = '-';
+                    minusBtn.style.width = '30px';
+                    minusBtn.style.height = '30px';
+                    minusBtn.style.border = '1px solid #ccc';
+                    minusBtn.style.borderRadius = '5px';
+                    minusBtn.style.background = 'white';
+                    minusBtn.style.cursor = 'pointer';
 
-                const quantityValue = document.createElement('span');
-                quantityValue.textContent = item.quantity || 1;
-                quantityValue.style.minWidth = '20px';
-                quantityValue.style.textAlign = 'center';
+                    const quantityValue = document.createElement('span');
+                    quantityValue.textContent = item.quantity || 1;
+                    quantityValue.style.minWidth = '25px';
+                    quantityValue.style.textAlign = 'center';
 
-                const plusBtn = document.createElement('button');
-                plusBtn.textContent = '+';
-                plusBtn.style.width = '25px';
-                plusBtn.style.height = '25px';
-                plusBtn.style.border = '1px solid #ccc';
-                plusBtn.style.borderRadius = '4px';
-                plusBtn.style.background = 'white';
-                plusBtn.style.cursor = 'pointer';
+                    const plusBtn = document.createElement('button');
+                    plusBtn.textContent = '+';
+                    plusBtn.style.width = '30px';
+                    plusBtn.style.height = '30px';
+                    plusBtn.style.border = '1px solid #ccc';
+                    plusBtn.style.borderRadius = '5px';
+                    plusBtn.style.background = 'white';
+                    plusBtn.style.cursor = 'pointer';
 
-                quantityDiv.appendChild(quantityLabel);
-                quantityDiv.appendChild(minusBtn);
-                quantityDiv.appendChild(quantityValue);
-                quantityDiv.appendChild(plusBtn);
+                    quantityDiv.appendChild(quantityLabel);
+                    quantityDiv.appendChild(minusBtn);
+                    quantityDiv.appendChild(quantityValue);
+                    quantityDiv.appendChild(plusBtn);
 
-                // Total price for this product
-                const totalPrice = document.createElement('div');
-                const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
-                const quantityNum = item.quantity || 1;
-                totalPrice.textContent = 'Total: $' + (priceNumber * quantityNum).toFixed(2);
-                totalPrice.style.fontWeight = '600';
-                totalPrice.style.marginBottom = '10px';
+                    // Total price for this product
+                    const totalPrice = document.createElement('div');
+                    const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+                    const quantityNum = item.quantity || 1;
+                    totalPrice.textContent = 'Total: $' + (priceNumber * quantityNum).toFixed(2);
+                    totalPrice.style.fontWeight = '600';
+                    totalPrice.style.marginBottom = '15px';
 
-                // Remove link
-                const removeLink = document.createElement('a');
-                removeLink.href = '#';
-                removeLink.textContent = 'Remove';
-                removeLink.style.color = '#395144';
-                removeLink.style.fontSize = '14px';
-                removeLink.style.cursor = 'pointer';
-                removeLink.style.textDecoration = 'underline';
+                    // Remove link
+                    const removeLink = document.createElement('a');
+                    removeLink.href = '#';
+                    removeLink.textContent = 'Remove';
+                    removeLink.style.color = '#395144';
+                    removeLink.style.fontSize = '16px';
+                    removeLink.style.cursor = 'pointer';
+                    removeLink.style.textDecoration = 'underline';
 
-                removeLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    cart.splice(index, 1);
-                    updateCartCount();
-                    renderCartItems();
-                });
-
-                // Quantity button events
-                minusBtn.addEventListener('click', () => {
-                    if ((item.quantity || 1) > 1) {
-                        item.quantity = (item.quantity || 1) - 1;
+                    removeLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        cart.splice(index, 1);
                         updateCartCount();
-                        renderCartItems();
-                    }
+                        renderCartPage();
+                    });
+
+                    // Quantity button events
+                    minusBtn.addEventListener('click', () => {
+                        if ((item.quantity || 1) > 1) {
+                            item.quantity = (item.quantity || 1) - 1;
+                            updateCartCount();
+                            renderCartPage();
+                        }
+                    });
+
+                    plusBtn.addEventListener('click', () => {
+                        item.quantity = (item.quantity || 1) + 1;
+                        updateCartCount();
+                        renderCartPage();
+                    });
+
+                    infoDiv.appendChild(title);
+                    infoDiv.appendChild(quantityDiv);
+                    infoDiv.appendChild(totalPrice);
+                    infoDiv.appendChild(removeLink);
+
+                    itemDiv.appendChild(img);
+                    itemDiv.appendChild(infoDiv);
+
+                    yourBag.appendChild(itemDiv);
                 });
-
-                plusBtn.addEventListener('click', () => {
-                    item.quantity = (item.quantity || 1) + 1;
-                    updateCartCount();
-                    renderCartItems();
-                });
-
-                infoDiv.appendChild(title);
-                infoDiv.appendChild(quantityDiv);
-                infoDiv.appendChild(totalPrice);
-                infoDiv.appendChild(removeLink);
-
-                itemDiv.appendChild(img);
-                itemDiv.appendChild(infoDiv);
-
-                yourBag.appendChild(itemDiv);
-            });
+            }
 
             // Right side: Order Summary
             const orderSummary = document.createElement('div');
-            orderSummary.style.width = '300px';
+            orderSummary.style.width = '350px';
 
-            const orderTitle = document.createElement('h3');
+            const orderTitle = document.createElement('h2');
             orderTitle.textContent = 'Order Summary';
-            orderTitle.style.marginBottom = '20px';
+            orderTitle.style.marginBottom = '30px';
+            orderTitle.style.fontWeight = '700';
+            orderTitle.style.fontSize = '28px';
             orderSummary.appendChild(orderTitle);
 
             // Subtotal
@@ -2243,7 +2220,7 @@
             subtotalDiv.style.fontWeight = '600';
             subtotalDiv.style.display = 'flex';
             subtotalDiv.style.justifyContent = 'space-between';
-            subtotalDiv.style.marginBottom = '10px';
+            subtotalDiv.style.marginBottom = '15px';
 
             const subtotalPriceSpan = document.createElement('span');
             subtotalPriceSpan.textContent = '$' + subtotalPrice.toFixed(2);
@@ -2254,9 +2231,9 @@
             const shippingInfo = document.createElement('div');
             shippingInfo.textContent = '$10 free shipping';
             shippingInfo.style.background = '#f0f0f0';
-            shippingInfo.style.padding = '8px';
+            shippingInfo.style.padding = '10px';
             shippingInfo.style.borderRadius = '5px';
-            shippingInfo.style.marginBottom = '10px';
+            shippingInfo.style.marginBottom = '15px';
             orderSummary.appendChild(shippingInfo);
 
             // Taxes
@@ -2265,7 +2242,7 @@
             taxesDiv.style.fontWeight = '600';
             taxesDiv.style.display = 'flex';
             taxesDiv.style.justifyContent = 'space-between';
-            taxesDiv.style.marginBottom = '10px';
+            taxesDiv.style.marginBottom = '15px';
 
             const taxesValue = document.createElement('span');
             taxesValue.textContent = 'TBD';
@@ -2279,7 +2256,7 @@
             estimatedTotalDiv.style.fontWeight = '700';
             estimatedTotalDiv.style.display = 'flex';
             estimatedTotalDiv.style.justifyContent = 'space-between';
-            estimatedTotalDiv.style.marginBottom = '20px';
+            estimatedTotalDiv.style.marginBottom = '30px';
 
             const estimatedTotalValue = document.createElement('span');
             estimatedTotalValue.textContent = '$' + (estimatedTotal > 0 ? estimatedTotal.toFixed(2) : '0.00');
@@ -2292,8 +2269,8 @@
                 const btn = document.createElement('button');
                 btn.textContent = method;
                 btn.style.width = '100%';
-                btn.style.padding = '10px';
-                btn.style.marginBottom = '10px';
+                btn.style.padding = '12px';
+                btn.style.marginBottom = '15px';
                 btn.style.border = 'none';
                 btn.style.borderRadius = '5px';
                 btn.style.background = '#395144';
@@ -2306,19 +2283,18 @@
             // Shipping & Return Information
             const shippingReturnInfo = document.createElement('div');
             shippingReturnInfo.style.background = '#f0f0f0';
-            shippingReturnInfo.style.padding = '15px';
+            shippingReturnInfo.style.padding = '20px';
             shippingReturnInfo.style.borderRadius = '5px';
-            shippingReturnInfo.style.fontSize = '12px';
+            shippingReturnInfo.style.fontSize = '14px';
             shippingReturnInfo.style.color = '#333';
-            shippingReturnInfo.style.marginTop = '20px';
             shippingReturnInfo.textContent = 'Shipping & Return Information: Eco Strawbag products will be shipped within 1–3 business days after payment is confirmed. We use trusted shipping services such as JNE, J&T, or Sicepat. The estimated delivery time is 2–5 business days depending on the destination. Free shipping promotions are available for certain purchases. If you receive a product that is damaged, defective, or does not match your order, you may request a return within 7 days of receiving the item. Please ensure the product is unused, the original tags are still attached, and it is returned in its original packaging. Return shipping costs are the responsibility of the buyer, unless the error was on our part.';
 
             orderSummary.appendChild(shippingReturnInfo);
 
-            container.appendChild(yourBag);
-            container.appendChild(orderSummary);
+            cartPage.appendChild(yourBag);
+            cartPage.appendChild(orderSummary);
 
-            dropdown.appendChild(container);
+            mainWrapper.appendChild(cartPage);
         }
 
         // Add to cart functionality
@@ -2332,7 +2308,9 @@
                 // Check if product already in cart
                 const existingIndex = cart.findIndex(item => item.title === title);
                 if (existingIndex === -1) {
-                    cart.push({ title, price, image });
+                    cart.push({ title, price, image, quantity: 1 });
+                } else {
+                    cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
                 }
 
                 updateCartCount();
@@ -2348,12 +2326,52 @@
             });
         });
 
-        // Toggle cart dropdown on cart icon click
+        // Navigate to cart page on cart icon click
         const cartIcon = document.querySelector('.nav-right a[href="#cart"]');
         if (cartIcon) {
+            cartIcon.removeEventListener('click', renderCartPage); // Remove previous listener if any
             cartIcon.addEventListener('click', function(e) {
                 e.preventDefault();
-                toggleCartDropdown();
+                renderCartPage();
+            });
+        }
+
+        // Add to cart functionality
+        document.querySelectorAll('.product-buttons .btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const productCard = this.closest('.product-card');
+                const title = productCard.querySelector('.product-title').textContent;
+                const price = productCard.querySelector('.product-price').textContent;
+                const image = productCard.querySelector('.product-image img').src;
+
+                // Check if product already in cart
+                const existingIndex = cart.findIndex(item => item.title === title);
+                if (existingIndex === -1) {
+                    cart.push({ title, price, image, quantity: 1 });
+                } else {
+                    cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
+                }
+
+                updateCartCount();
+
+                // Show added animation
+                const originalText = this.innerHTML;
+                if (this.innerText.includes('Add to Cart')) {
+                    this.innerHTML = '<i class="fas fa-check"></i> Added!';
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                }
+            });
+        });
+
+        // Navigate to cart page on cart icon click
+        const cartIcon = document.querySelector('.nav-right a[href="#cart"]');
+        if (cartIcon) {
+            cartIcon.removeEventListener('click', renderCartPage); // Remove previous listener if any
+            cartIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+                renderCartPage();
             });
         }
 

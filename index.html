@@ -2024,9 +2024,146 @@
             });
         });
 
-        // Add to cart animation
+        // Cart state
+        const cart = [];
+
+        // Update cart count badge
+        function updateCartCount() {
+            let cartCount = document.getElementById('cart-count');
+            if (!cartCount) {
+                const cartIcon = document.querySelector('.nav-right a[href="#cart"]');
+                cartCount = document.createElement('span');
+                cartCount.id = 'cart-count';
+                cartCount.style.position = 'absolute';
+                cartCount.style.top = '5px';
+                cartCount.style.right = '5px';
+                cartCount.style.background = '#395144';
+                cartCount.style.color = 'white';
+                cartCount.style.borderRadius = '50%';
+                cartCount.style.padding = '2px 6px';
+                cartCount.style.fontSize = '12px';
+                cartCount.style.fontWeight = '600';
+                cartIcon.style.position = 'relative';
+                cartIcon.appendChild(cartCount);
+            }
+            cartCount.textContent = cart.length;
+            if (cart.length === 0) {
+                cartCount.style.display = 'none';
+            } else {
+                cartCount.style.display = 'block';
+            }
+        }
+
+        // Show cart dropdown
+        function toggleCartDropdown() {
+            let dropdown = document.getElementById('cart-dropdown');
+            if (!dropdown) {
+                dropdown = document.createElement('div');
+                dropdown.id = 'cart-dropdown';
+                dropdown.style.position = 'absolute';
+                dropdown.style.top = '60px';
+                dropdown.style.right = '0';
+                dropdown.style.width = '300px';
+                dropdown.style.maxHeight = '400px';
+                dropdown.style.overflowY = 'auto';
+                dropdown.style.background = 'white';
+                dropdown.style.border = '1px solid #ccc';
+                dropdown.style.borderRadius = '8px';
+                dropdown.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+                dropdown.style.zIndex = '10000';
+                dropdown.style.padding = '10px';
+                const cartIcon = document.querySelector('.nav-right a[href="#cart"]');
+                cartIcon.style.position = 'relative';
+                cartIcon.appendChild(dropdown);
+            }
+            if (dropdown.style.display === 'block') {
+                dropdown.style.display = 'none';
+            } else {
+                renderCartItems();
+                dropdown.style.display = 'block';
+            }
+        }
+
+        // Render cart items in dropdown
+        function renderCartItems() {
+            const dropdown = document.getElementById('cart-dropdown');
+            dropdown.innerHTML = '';
+            if (cart.length === 0) {
+                dropdown.textContent = 'Your cart is empty.';
+                return;
+            }
+            cart.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.style.display = 'flex';
+                itemDiv.style.alignItems = 'center';
+                itemDiv.style.marginBottom = '10px';
+
+                const img = document.createElement('img');
+                img.src = item.image;
+                img.alt = item.title;
+                img.style.width = '50px';
+                img.style.height = '50px';
+                img.style.objectFit = 'cover';
+                img.style.borderRadius = '5px';
+                img.style.marginRight = '10px';
+
+                const infoDiv = document.createElement('div');
+                infoDiv.style.flex = '1';
+
+                const title = document.createElement('div');
+                title.textContent = item.title;
+                title.style.fontWeight = '600';
+                title.style.fontSize = '14px';
+
+                const price = document.createElement('div');
+                price.textContent = item.price;
+                price.style.color = '#395144';
+                price.style.fontWeight = '600';
+
+                infoDiv.appendChild(title);
+                infoDiv.appendChild(price);
+
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'Remove';
+                removeBtn.style.background = '#e74c3c';
+                removeBtn.style.color = 'white';
+                removeBtn.style.border = 'none';
+                removeBtn.style.borderRadius = '5px';
+                removeBtn.style.padding = '5px 10px';
+                removeBtn.style.cursor = 'pointer';
+                removeBtn.style.fontSize = '12px';
+
+                removeBtn.addEventListener('click', () => {
+                    cart.splice(index, 1);
+                    updateCartCount();
+                    renderCartItems();
+                });
+
+                itemDiv.appendChild(img);
+                itemDiv.appendChild(infoDiv);
+                itemDiv.appendChild(removeBtn);
+
+                dropdown.appendChild(itemDiv);
+            });
+        }
+
+        // Add to cart functionality
         document.querySelectorAll('.product-buttons .btn').forEach(btn => {
             btn.addEventListener('click', function() {
+                const productCard = this.closest('.product-card');
+                const title = productCard.querySelector('.product-title').textContent;
+                const price = productCard.querySelector('.product-price').textContent;
+                const image = productCard.querySelector('.product-image img').src;
+
+                // Check if product already in cart
+                const existingIndex = cart.findIndex(item => item.title === title);
+                if (existingIndex === -1) {
+                    cart.push({ title, price, image });
+                }
+
+                updateCartCount();
+
+                // Show added animation
                 const originalText = this.innerHTML;
                 if (this.innerText.includes('Add to Cart')) {
                     this.innerHTML = '<i class="fas fa-check"></i> Added!';
@@ -2036,7 +2173,16 @@
                 }
             });
         });
-        
+
+        // Toggle cart dropdown on cart icon click
+        const cartIcon = document.querySelector('.nav-right a[href="#cart"]');
+        if (cartIcon) {
+            cartIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleCartDropdown();
+            });
+        }
+
         // Parallax effect for hero section
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;

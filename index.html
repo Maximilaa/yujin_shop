@@ -2092,59 +2092,233 @@
                 dropdown.textContent = 'Your cart is empty.';
                 return;
             }
+
+            // Container for cart content
+            const container = document.createElement('div');
+            container.style.display = 'flex';
+            container.style.justifyContent = 'space-between';
+            container.style.gap = '20px';
+
+            // Left side: Your Bag
+            const yourBag = document.createElement('div');
+            yourBag.style.flex = '1';
+
+            const yourBagTitle = document.createElement('h3');
+            yourBagTitle.textContent = 'Your Bag';
+            yourBagTitle.style.marginBottom = '20px';
+            yourBagTitle.style.fontWeight = '700';
+            yourBag.appendChild(yourBagTitle);
+
             cart.forEach((item, index) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.style.display = 'flex';
                 itemDiv.style.alignItems = 'center';
-                itemDiv.style.marginBottom = '10px';
+                itemDiv.style.marginBottom = '20px';
 
                 const img = document.createElement('img');
                 img.src = item.image;
                 img.alt = item.title;
-                img.style.width = '50px';
-                img.style.height = '50px';
+                img.style.width = '80px';
+                img.style.height = '80px';
                 img.style.objectFit = 'cover';
-                img.style.borderRadius = '5px';
-                img.style.marginRight = '10px';
+                img.style.borderRadius = '10px';
+                img.style.marginRight = '15px';
 
                 const infoDiv = document.createElement('div');
                 infoDiv.style.flex = '1';
 
                 const title = document.createElement('div');
                 title.textContent = item.title;
-                title.style.fontWeight = '600';
-                title.style.fontSize = '14px';
+                title.style.fontWeight = '700';
+                title.style.fontSize = '16px';
+                title.style.marginBottom = '10px';
 
-                const price = document.createElement('div');
-                price.textContent = item.price;
-                price.style.color = '#395144';
-                price.style.fontWeight = '600';
+                // Quantity controls
+                const quantityDiv = document.createElement('div');
+                quantityDiv.style.display = 'flex';
+                quantityDiv.style.alignItems = 'center';
+                quantityDiv.style.gap = '10px';
+                quantityDiv.style.marginBottom = '10px';
 
-                infoDiv.appendChild(title);
-                infoDiv.appendChild(price);
+                const quantityLabel = document.createElement('span');
+                quantityLabel.textContent = 'Quantity';
+                quantityLabel.style.fontWeight = '600';
+                quantityLabel.style.marginRight = '10px';
 
-                const removeBtn = document.createElement('button');
-                removeBtn.textContent = 'Remove';
-                removeBtn.style.background = '#e74c3c';
-                removeBtn.style.color = 'white';
-                removeBtn.style.border = 'none';
-                removeBtn.style.borderRadius = '5px';
-                removeBtn.style.padding = '5px 10px';
-                removeBtn.style.cursor = 'pointer';
-                removeBtn.style.fontSize = '12px';
+                const minusBtn = document.createElement('button');
+                minusBtn.textContent = '-';
+                minusBtn.style.width = '25px';
+                minusBtn.style.height = '25px';
+                minusBtn.style.border = '1px solid #ccc';
+                minusBtn.style.borderRadius = '4px';
+                minusBtn.style.background = 'white';
+                minusBtn.style.cursor = 'pointer';
 
-                removeBtn.addEventListener('click', () => {
+                const quantityValue = document.createElement('span');
+                quantityValue.textContent = item.quantity || 1;
+                quantityValue.style.minWidth = '20px';
+                quantityValue.style.textAlign = 'center';
+
+                const plusBtn = document.createElement('button');
+                plusBtn.textContent = '+';
+                plusBtn.style.width = '25px';
+                plusBtn.style.height = '25px';
+                plusBtn.style.border = '1px solid #ccc';
+                plusBtn.style.borderRadius = '4px';
+                plusBtn.style.background = 'white';
+                plusBtn.style.cursor = 'pointer';
+
+                quantityDiv.appendChild(quantityLabel);
+                quantityDiv.appendChild(minusBtn);
+                quantityDiv.appendChild(quantityValue);
+                quantityDiv.appendChild(plusBtn);
+
+                // Total price for this product
+                const totalPrice = document.createElement('div');
+                const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+                const quantityNum = item.quantity || 1;
+                totalPrice.textContent = 'Total: $' + (priceNumber * quantityNum).toFixed(2);
+                totalPrice.style.fontWeight = '600';
+                totalPrice.style.marginBottom = '10px';
+
+                // Remove link
+                const removeLink = document.createElement('a');
+                removeLink.href = '#';
+                removeLink.textContent = 'Remove';
+                removeLink.style.color = '#395144';
+                removeLink.style.fontSize = '14px';
+                removeLink.style.cursor = 'pointer';
+                removeLink.style.textDecoration = 'underline';
+
+                removeLink.addEventListener('click', (e) => {
+                    e.preventDefault();
                     cart.splice(index, 1);
                     updateCartCount();
                     renderCartItems();
                 });
 
+                // Quantity button events
+                minusBtn.addEventListener('click', () => {
+                    if ((item.quantity || 1) > 1) {
+                        item.quantity = (item.quantity || 1) - 1;
+                        updateCartCount();
+                        renderCartItems();
+                    }
+                });
+
+                plusBtn.addEventListener('click', () => {
+                    item.quantity = (item.quantity || 1) + 1;
+                    updateCartCount();
+                    renderCartItems();
+                });
+
+                infoDiv.appendChild(title);
+                infoDiv.appendChild(quantityDiv);
+                infoDiv.appendChild(totalPrice);
+                infoDiv.appendChild(removeLink);
+
                 itemDiv.appendChild(img);
                 itemDiv.appendChild(infoDiv);
-                itemDiv.appendChild(removeBtn);
 
-                dropdown.appendChild(itemDiv);
+                yourBag.appendChild(itemDiv);
             });
+
+            // Right side: Order Summary
+            const orderSummary = document.createElement('div');
+            orderSummary.style.width = '300px';
+
+            const orderTitle = document.createElement('h3');
+            orderTitle.textContent = 'Order Summary';
+            orderTitle.style.marginBottom = '20px';
+            orderSummary.appendChild(orderTitle);
+
+            // Subtotal
+            const subtotalDiv = document.createElement('div');
+            const subtotalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+            const subtotalPrice = cart.reduce((acc, item) => {
+                const priceNum = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+                return acc + priceNum * (item.quantity || 1);
+            }, 0);
+            subtotalDiv.textContent = `Subtotal (${subtotalItems} items)`;
+            subtotalDiv.style.fontWeight = '600';
+            subtotalDiv.style.display = 'flex';
+            subtotalDiv.style.justifyContent = 'space-between';
+            subtotalDiv.style.marginBottom = '10px';
+
+            const subtotalPriceSpan = document.createElement('span');
+            subtotalPriceSpan.textContent = '$' + subtotalPrice.toFixed(2);
+            subtotalDiv.appendChild(subtotalPriceSpan);
+            orderSummary.appendChild(subtotalDiv);
+
+            // Shipping info
+            const shippingInfo = document.createElement('div');
+            shippingInfo.textContent = '$10 free shipping';
+            shippingInfo.style.background = '#f0f0f0';
+            shippingInfo.style.padding = '8px';
+            shippingInfo.style.borderRadius = '5px';
+            shippingInfo.style.marginBottom = '10px';
+            orderSummary.appendChild(shippingInfo);
+
+            // Taxes
+            const taxesDiv = document.createElement('div');
+            taxesDiv.textContent = 'Taxes';
+            taxesDiv.style.fontWeight = '600';
+            taxesDiv.style.display = 'flex';
+            taxesDiv.style.justifyContent = 'space-between';
+            taxesDiv.style.marginBottom = '10px';
+
+            const taxesValue = document.createElement('span');
+            taxesValue.textContent = 'TBD';
+            taxesDiv.appendChild(taxesValue);
+            orderSummary.appendChild(taxesDiv);
+
+            // Estimated total
+            const estimatedTotalDiv = document.createElement('div');
+            const estimatedTotal = subtotalPrice - 10; // Assuming $10 shipping discount
+            estimatedTotalDiv.textContent = 'Estimated total';
+            estimatedTotalDiv.style.fontWeight = '700';
+            estimatedTotalDiv.style.display = 'flex';
+            estimatedTotalDiv.style.justifyContent = 'space-between';
+            estimatedTotalDiv.style.marginBottom = '20px';
+
+            const estimatedTotalValue = document.createElement('span');
+            estimatedTotalValue.textContent = '$' + (estimatedTotal > 0 ? estimatedTotal.toFixed(2) : '0.00');
+            estimatedTotalDiv.appendChild(estimatedTotalValue);
+            orderSummary.appendChild(estimatedTotalDiv);
+
+            // Payment buttons
+            const paymentMethods = ['Paypal', 'Mandiri', 'Dana', 'BCA'];
+            paymentMethods.forEach(method => {
+                const btn = document.createElement('button');
+                btn.textContent = method;
+                btn.style.width = '100%';
+                btn.style.padding = '10px';
+                btn.style.marginBottom = '10px';
+                btn.style.border = 'none';
+                btn.style.borderRadius = '5px';
+                btn.style.background = '#395144';
+                btn.style.color = 'white';
+                btn.style.fontWeight = '600';
+                btn.style.cursor = 'pointer';
+                orderSummary.appendChild(btn);
+            });
+
+            // Shipping & Return Information
+            const shippingReturnInfo = document.createElement('div');
+            shippingReturnInfo.style.background = '#f0f0f0';
+            shippingReturnInfo.style.padding = '15px';
+            shippingReturnInfo.style.borderRadius = '5px';
+            shippingReturnInfo.style.fontSize = '12px';
+            shippingReturnInfo.style.color = '#333';
+            shippingReturnInfo.style.marginTop = '20px';
+            shippingReturnInfo.textContent = 'Shipping & Return Information: Eco Strawbag products will be shipped within 1–3 business days after payment is confirmed. We use trusted shipping services such as JNE, J&T, or Sicepat. The estimated delivery time is 2–5 business days depending on the destination. Free shipping promotions are available for certain purchases. If you receive a product that is damaged, defective, or does not match your order, you may request a return within 7 days of receiving the item. Please ensure the product is unused, the original tags are still attached, and it is returned in its original packaging. Return shipping costs are the responsibility of the buyer, unless the error was on our part.';
+
+            orderSummary.appendChild(shippingReturnInfo);
+
+            container.appendChild(yourBag);
+            container.appendChild(orderSummary);
+
+            dropdown.appendChild(container);
         }
 
         // Add to cart functionality

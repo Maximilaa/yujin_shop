@@ -2177,6 +2177,7 @@
                             item.quantity = (item.quantity || 1) - 1;
                             quantityValue.textContent = item.quantity;
                             updateCartCount();
+                            updateSubtotal();
                             // renderCartPage(); // Removed full re-render for better UX
                         }
                     });
@@ -2185,6 +2186,7 @@
                         item.quantity = (item.quantity || 1) + 1;
                         quantityValue.textContent = item.quantity;
                         updateCartCount();
+                        updateSubtotal();
                         // renderCartPage(); // Removed full re-render for better UX
                     });
 
@@ -2213,19 +2215,28 @@
 
             // Subtotal
             const subtotalDiv = document.createElement('div');
-            const subtotalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
-            const subtotalPrice = cart.reduce((acc, item) => {
-                const priceNum = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
-                return acc + priceNum * (item.quantity || 1);
-            }, 0);
-            subtotalDiv.textContent = `Subtotal (${subtotalItems} items)`;
             subtotalDiv.style.fontWeight = '600';
             subtotalDiv.style.display = 'flex';
             subtotalDiv.style.justifyContent = 'space-between';
             subtotalDiv.style.marginBottom = '15px';
 
+            const subtotalTextSpan = document.createElement('span');
             const subtotalPriceSpan = document.createElement('span');
-            subtotalPriceSpan.textContent = '$' + subtotalPrice.toFixed(2);
+
+            function updateSubtotal() {
+                const subtotalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+                const subtotalPrice = cart.reduce((acc, item) => {
+                    const priceNum = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+                    return acc + priceNum * (item.quantity || 1);
+                }, 0);
+                subtotalTextSpan.textContent = `Subtotal (${subtotalItems} items)`;
+                subtotalPriceSpan.textContent = '$' + subtotalPrice.toFixed(2);
+                // Also update estimated total
+                const estimatedTotal = subtotalPrice - 10; // Assuming $10 shipping discount
+                estimatedTotalValue.textContent = '$' + (estimatedTotal > 0 ? estimatedTotal.toFixed(2) : '0.00');
+            }
+
+            subtotalDiv.appendChild(subtotalTextSpan);
             subtotalDiv.appendChild(subtotalPriceSpan);
             orderSummary.appendChild(subtotalDiv);
 
@@ -2253,7 +2264,6 @@
 
             // Estimated total
             const estimatedTotalDiv = document.createElement('div');
-            const estimatedTotal = subtotalPrice - 10; // Assuming $10 shipping discount
             estimatedTotalDiv.textContent = 'Estimated total';
             estimatedTotalDiv.style.fontWeight = '700';
             estimatedTotalDiv.style.display = 'flex';
@@ -2261,7 +2271,7 @@
             estimatedTotalDiv.style.marginBottom = '30px';
 
             const estimatedTotalValue = document.createElement('span');
-            estimatedTotalValue.textContent = '$' + (estimatedTotal > 0 ? estimatedTotal.toFixed(2) : '0.00');
+            estimatedTotalValue.textContent = '$0.00';
             estimatedTotalDiv.appendChild(estimatedTotalValue);
             orderSummary.appendChild(estimatedTotalDiv);
 

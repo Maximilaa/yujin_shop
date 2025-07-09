@@ -2222,6 +2222,7 @@
 
             const subtotalTextSpan = document.createElement('span');
             const subtotalPriceSpan = document.createElement('span');
+            const estimatedTotalValue = document.createElement('span'); // Moved declaration here
 
             function updateSubtotal() {
                 const subtotalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
@@ -2270,10 +2271,10 @@
             estimatedTotalDiv.style.justifyContent = 'space-between';
             estimatedTotalDiv.style.marginBottom = '30px';
 
-            const estimatedTotalValue = document.createElement('span');
-            estimatedTotalValue.textContent = '$0.00';
             estimatedTotalDiv.appendChild(estimatedTotalValue);
             orderSummary.appendChild(estimatedTotalDiv);
+
+            updateSubtotal(); // Call updateSubtotal initially to set values
 
             // Payment buttons
             const paymentMethods = ['Paypal', 'Mandiri', 'Dana', 'BCA'];

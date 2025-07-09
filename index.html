@@ -2055,6 +2055,140 @@
         }
 
         // Render cart page
+
+        // Add to cart functionality
+        document.querySelectorAll('.product-buttons .btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const productCard = this.closest('.product-card');
+                const title = productCard.querySelector('.product-title').textContent;
+                const price = productCard.querySelector('.product-price').textContent;
+                const image = productCard.querySelector('.product-image img').src;
+
+                // Check if product already in cart
+                const existingIndex = cart.findIndex(item => item.title === title);
+                if (existingIndex === -1) {
+                    cart.push({ title, price, image, quantity: 1 });
+                } else {
+                    cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
+                }
+
+                updateCartCount();
+
+                // Show added animation
+                const originalText = this.innerHTML;
+                if (this.innerText.includes('Add to Cart')) {
+                    this.innerHTML = '<i class="fas fa-check"></i> Added!';
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                }
+            });
+        });
+
+        // Navigate to cart page on cart icon click
+        const cartIcon = document.querySelector('.nav-right a[href="#cart"]');
+        if (cartIcon) {
+            cartIcon.removeEventListener('click', renderCartPage); // Remove previous listener if any
+            cartIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+                renderCartPage();
+            });
+        }
+
+        // Add to cart functionality
+        document.querySelectorAll('.product-buttons .btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const productCard = this.closest('.product-card');
+                const title = productCard.querySelector('.product-title').textContent;
+                const price = productCard.querySelector('.product-price').textContent;
+                const image = productCard.querySelector('.product-image img').src;
+
+                // Check if product already in cart
+                const existingIndex = cart.findIndex(item => item.title === title);
+                if (existingIndex === -1) {
+                    cart.push({ title, price, image, quantity: 1 });
+                } else {
+                    cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
+                }
+
+                updateCartCount();
+
+                // Show added animation
+                const originalText = this.innerHTML;
+                if (this.innerText.includes('Add to Cart')) {
+                    this.innerHTML = '<i class="fas fa-check"></i> Added!';
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                }
+            });
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero-image');
+            // FIXED: Check if parallax element exists
+            if (parallax) {
+                const speed = scrolled * 0.3;
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+
+
+        // FAQ Toggle Functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const faqItem = this.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all other FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (item !== faqItem) {
+                       item.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                } else {
+                    faqItem.classList.remove('active');
+                }
+            });
+        });
+
+        // Cart state
+        const cart = [];
+
+        // Update cart count badge
+        function updateCartCount() {
+            let cartCount = document.getElementById('cart-count');
+            if (!cartCount) {
+                const cartIcon = document.querySelector('.nav-right a[href="#cart"]');
+                cartCount = document.createElement('span');
+                cartCount.id = 'cart-count';
+                cartCount.style.position = 'absolute';
+                cartCount.style.top = '5px';
+                cartCount.style.right = '5px';
+                cartCount.style.background = '#395144';
+                cartCount.style.color = 'white';
+                cartCount.style.borderRadius = '50%';
+                cartCount.style.padding = '2px 6px';
+                cartCount.style.fontSize = '12px';
+                cartCount.style.fontWeight = '600';
+                cartIcon.style.position = 'relative';
+                cartIcon.appendChild(cartCount);
+            }
+            cartCount.textContent = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+            if (cart.length === 0) {
+                cartCount.style.display = 'none';
+            } else {
+                cartCount.style.display = 'block';
+            }
+        }
+
+        // Render cart page
         function renderCartPage() {
             const mainWrapper = document.querySelector('.main-wrapper');
             mainWrapper.innerHTML = '';
@@ -2331,110 +2465,6 @@
 
             mainWrapper.appendChild(cartPage);
         }
-
-        // Add to cart functionality
-        document.querySelectorAll('.product-buttons .btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const productCard = this.closest('.product-card');
-                const title = productCard.querySelector('.product-title').textContent;
-                const price = productCard.querySelector('.product-price').textContent;
-                const image = productCard.querySelector('.product-image img').src;
-
-                // Check if product already in cart
-                const existingIndex = cart.findIndex(item => item.title === title);
-                if (existingIndex === -1) {
-                    cart.push({ title, price, image, quantity: 1 });
-                } else {
-                    cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
-                }
-
-                updateCartCount();
-
-                // Show added animation
-                const originalText = this.innerHTML;
-                if (this.innerText.includes('Add to Cart')) {
-                    this.innerHTML = '<i class="fas fa-check"></i> Added!';
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                    }, 2000);
-                }
-            });
-        });
-
-        // Navigate to cart page on cart icon click
-        const cartIcon = document.querySelector('.nav-right a[href="#cart"]');
-        if (cartIcon) {
-            cartIcon.removeEventListener('click', renderCartPage); // Remove previous listener if any
-            cartIcon.addEventListener('click', function(e) {
-                e.preventDefault();
-                renderCartPage();
-            });
-        }
-
-        // Add to cart functionality
-        document.querySelectorAll('.product-buttons .btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const productCard = this.closest('.product-card');
-                const title = productCard.querySelector('.product-title').textContent;
-                const price = productCard.querySelector('.product-price').textContent;
-                const image = productCard.querySelector('.product-image img').src;
-
-                // Check if product already in cart
-                const existingIndex = cart.findIndex(item => item.title === title);
-                if (existingIndex === -1) {
-                    cart.push({ title, price, image, quantity: 1 });
-                } else {
-                    cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
-                }
-
-                updateCartCount();
-
-                // Show added animation
-                const originalText = this.innerHTML;
-                if (this.innerText.includes('Add to Cart')) {
-                    this.innerHTML = '<i class="fas fa-check"></i> Added!';
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                    }, 2000);
-                }
-            });
-        });
-
-        // Parallax effect for hero section
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.hero-image');
-            // FIXED: Check if parallax element exists
-            if (parallax) {
-                const speed = scrolled * 0.3;
-                parallax.style.transform = `translateY(${speed}px)`;
-            }
-        });
-
-
-        // FAQ Toggle Functionality
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', function() {
-                const faqItem = this.parentElement;
-                const isActive = faqItem.classList.contains('active');
-                
-                // Close all other FAQ items
-                document.querySelectorAll('.faq-item').forEach(item => {
-                    if (item !== faqItem) {
-                       item.classList.remove('active');
-                    }
-                });
-                
-                // Toggle current item
-                if (!isActive) {
-                    faqItem.classList.add('active');
-                } else {
-                    faqItem.classList.remove('active');
-                }
-            });
-        });
-
-    });
     </script>
 </body>
 </html>

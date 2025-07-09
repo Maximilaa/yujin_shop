@@ -2175,15 +2175,17 @@
                     minusBtn.addEventListener('click', () => {
                         if ((item.quantity || 1) > 1) {
                             item.quantity = (item.quantity || 1) - 1;
+                            quantityValue.textContent = item.quantity;
                             updateCartCount();
-                            renderCartPage();
+                            // renderCartPage(); // Removed full re-render for better UX
                         }
                     });
 
                     plusBtn.addEventListener('click', () => {
                         item.quantity = (item.quantity || 1) + 1;
+                        quantityValue.textContent = item.quantity;
                         updateCartCount();
-                        renderCartPage();
+                        // renderCartPage(); // Removed full re-render for better UX
                     });
 
                     infoDiv.appendChild(title);

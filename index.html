@@ -2265,6 +2265,7 @@
 
             // Payment buttons
             const paymentMethods = ['Paypal', 'Mandiri', 'Dana', 'BCA'];
+            let selectedPaymentMethod = null;
             paymentMethods.forEach(method => {
                 const btn = document.createElement('button');
                 btn.textContent = method;
@@ -2277,6 +2278,21 @@
                 btn.style.color = 'white';
                 btn.style.fontWeight = '600';
                 btn.style.cursor = 'pointer';
+
+                btn.addEventListener('click', () => {
+                    // Deselect all buttons
+                    const allButtons = orderSummary.querySelectorAll('button');
+                    allButtons.forEach(b => {
+                        b.style.background = '#395144';
+                        b.style.color = 'white';
+                    });
+                    // Select clicked button
+                    btn.style.background = '#2C3E36';
+                    btn.style.color = '#fff';
+                    selectedPaymentMethod = method;
+                    console.log('Selected payment method:', selectedPaymentMethod);
+                });
+
                 orderSummary.appendChild(btn);
             });
 

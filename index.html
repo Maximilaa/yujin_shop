@@ -2176,6 +2176,9 @@
                         if ((item.quantity || 1) > 1) {
                             item.quantity = (item.quantity || 1) - 1;
                             quantityValue.textContent = item.quantity;
+                            // Update total price for this product
+                            const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+                            totalPrice.textContent = 'Total: $' + (priceNumber * item.quantity).toFixed(2);
                             updateCartCount();
                             updateSubtotal();
                             // renderCartPage(); // Removed full re-render for better UX
@@ -2185,6 +2188,9 @@
                     plusBtn.addEventListener('click', () => {
                         item.quantity = (item.quantity || 1) + 1;
                         quantityValue.textContent = item.quantity;
+                        // Update total price for this product
+                        const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+                        totalPrice.textContent = 'Total: $' + (priceNumber * item.quantity).toFixed(2);
                         updateCartCount();
                         updateSubtotal();
                         // renderCartPage(); // Removed full re-render for better UX

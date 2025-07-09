@@ -2180,7 +2180,7 @@
                             const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
                             totalPrice.textContent = 'Total: $' + (priceNumber * item.quantity).toFixed(2);
                             updateCartCount();
-                            updateSubtotal();
+                            updateOrderSummary();
                             // renderCartPage(); // Removed full re-render for better UX
                         }
                     });
@@ -2192,7 +2192,7 @@
                         const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
                         totalPrice.textContent = 'Total: $' + (priceNumber * item.quantity).toFixed(2);
                         updateCartCount();
-                        updateSubtotal();
+                        updateOrderSummary();
                         // renderCartPage(); // Removed full re-render for better UX
                     });
 
@@ -2228,20 +2228,6 @@
 
             const subtotalTextSpan = document.createElement('span');
             const subtotalPriceSpan = document.createElement('span');
-            const estimatedTotalValue = document.createElement('span'); // Moved declaration here
-
-            function updateSubtotal() {
-                const subtotalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
-                const subtotalPrice = cart.reduce((acc, item) => {
-                    const priceNum = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
-                    return acc + priceNum * (item.quantity || 1);
-                }, 0);
-                subtotalTextSpan.textContent = `Subtotal (${subtotalItems} items)`;
-                subtotalPriceSpan.textContent = '$' + subtotalPrice.toFixed(2);
-                // Also update estimated total
-                const estimatedTotal = subtotalPrice - 10; // Assuming $10 shipping discount
-                estimatedTotalValue.textContent = '$' + (estimatedTotal > 0 ? estimatedTotal.toFixed(2) : '0.00');
-            }
 
             subtotalDiv.appendChild(subtotalTextSpan);
             subtotalDiv.appendChild(subtotalPriceSpan);
@@ -2277,10 +2263,24 @@
             estimatedTotalDiv.style.justifyContent = 'space-between';
             estimatedTotalDiv.style.marginBottom = '30px';
 
+            const estimatedTotalValue = document.createElement('span');
+            estimatedTotalValue.textContent = '$0.00';
             estimatedTotalDiv.appendChild(estimatedTotalValue);
             orderSummary.appendChild(estimatedTotalDiv);
 
-            updateSubtotal(); // Call updateSubtotal initially to set values
+            function updateOrderSummary() {
+                const subtotalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+                const subtotalPrice = cart.reduce((acc, item) => {
+                    const priceNum = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+                    return acc + priceNum * (item.quantity || 1);
+                }, 0);
+                subtotalTextSpan.textContent = `Subtotal (${subtotalItems} items)`;
+                subtotalPriceSpan.textContent = '$' + subtotalPrice.toFixed(2);
+                const estimatedTotal = subtotalPrice - 10; // Assuming $10 shipping discount
+                estimatedTotalValue.textContent = '$' + (estimatedTotal > 0 ? estimatedTotal.toFixed(2) : '0.00');
+            }
+
+            updateOrderSummary(); // Initial call to set values
 
             // Payment buttons
             const paymentMethods = ['Paypal', 'Mandiri', 'Dana', 'BCA'];

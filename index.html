@@ -2164,6 +2164,148 @@
         function renderCartPage() {
             const mainWrapper = document.querySelector('.main-wrapper');
             mainWrapper.innerHTML = '';
+            // Restore the original home section and other page content
+            mainWrapper.innerHTML = `
+                <header>
+                    <div class="container">
+                        <nav>
+                            <div class="nav-left">
+                                <div class="search-container">
+                                    <input type="text" placeholder="Search..." class="search-input">
+                                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                            <div class="logo">YUJINSHOP</div>
+                            <div class="nav-right">
+                                <a href="#wishlist" class="nav-icon"><i class="far fa-heart"></i></a>
+                                <a href="#cart" class="nav-icon"><i class="fas fa-shopping-bag"></i></a>
+                                <a href="#chat" class="nav-icon"><i class="far fa-comment"></i></a>
+                                <a href="#user" class="nav-icon"><i class="far fa-user"></i></a>
+                            </div>
+                        </nav>
+                    </div>
+                    
+                    <div class="secondary-nav" id="nav-container">
+                        <div class="container">
+                            <ul class="nav-links">
+                                <li><a href="#home" class="active">Home</a></li>
+                                <li><a href="#about">About Us</a></li>
+                                <li><a href="#products">Product</a></li>
+                                <li><a href="#review">Review</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </header>
+                <section id="home" class="home-section">
+                    <div class="hero">
+                        <div class="container" style="display: flex; align-items: center; flex-wrap: wrap;">
+                            <div class="hero-content">
+                                <h1>Eco-friendly Straw Bags for Sustainable Living</h1>
+                                <p>Handcrafted with natural materials, our eco-friendly straw bags combine style, durability, and environmental consciousness to elevate your everyday look.</p>
+                                <a href="#products" class="btn">Shop Now</a>
+                            </div>
+                            <div class="hero-image">
+                                <img src="https://via.placeholder.com/500x400.png?text=Yujin+Eco+Straw+Bag" alt="Yujin Eco Straw Bag Showcase">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="home-features">
+                        <div class="container">
+                            <h2 class="section-title">Why Choose Our Eco Bags?</h2>
+                            <div class="features-grid">
+                                <div class="feature-card animate-fade-in">
+                                    <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+                                    <h3>100% Eco-friendly</h3>
+                                    <p>Made from natural straw materials that are biodegradable and sustainable for the environment.</p>
+                                </div>
+                                <div class="feature-card animate-fade-in">
+                                    <div class="feature-icon"><i class="fas fa-hands"></i></div>
+                                    <h3>Handcrafted Quality</h3>
+                                    <p>Each bag is meticulously handcrafted by skilled artisans, ensuring premium quality and unique design.</p>
+                                </div>
+                                <div class="feature-card animate-fade-in">
+                                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                                    <h3>Durable & Sturdy</h3>
+                                    <p>Designed to withstand daily use while maintaining its beautiful appearance for years to come.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="products" class="home-products">
+                        <div class="container">
+                            <h2 class="section-title">Featured Products</h2>
+                            <div class="product-preview-grid">
+                                <div class="product-card animate-fade-in">
+                                    <div class="product-image">
+                                        <img src="https://via.placeholder.com/300x300.png?text=Classic+Tote" alt="Classic Straw Tote">
+                                    </div>
+                                    <div class="product-info">
+                                        <h3 class="product-title">Classic Straw Tote</h3>
+                                        <div class="product-rating">
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="rating-count">(42)</span>
+                                        </div>
+                                        <p class="product-price">$39.99</p>
+                                        <div class="product-buttons">
+                                            <button class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-card animate-fade-in">
+                                    <div class="product-image">
+                                        <img src="https://via.placeholder.com/300x300.png?text=Round+Crossbody" alt="Round Straw Crossbody">
+                                    </div>
+                                    <div class="product-info">
+                                        <h3 class="product-title">Round Straw Crossbody</h3>
+                                        <div class="product-rating">
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="rating-count">(37)</span>
+                                        </div>
+                                        <p class="product-price">$45.99</p>
+                                        <div class="product-buttons">
+                                            <button class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-card animate-fade-in">
+                                    <div class="product-image">
+                                        <img src="https://via.placeholder.com/300x300.png?text=Beach+Basket" alt="Beach Straw Basket">
+                                    </div>
+                                    <div class="product-info">
+                                        <h3 class="product-title">Beach Straw Basket</h3>
+                                        <div class="product-rating">
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="star" style="color: #ddd;"><i class="far fa-star"></i></span>
+                                            <span class="rating-count">(28)</span>
+                                        </div>
+                                        <p class="product-price">$52.99</p>
+                                        <div class="product-buttons">
+                                            <button class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="view-all-products">
+                                <a href="#products" class="btn btn-outline">View All Products</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
 
             const cartPage = document.createElement('div');
             cartPage.style.padding = '40px';

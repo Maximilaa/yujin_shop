@@ -2086,14 +2086,255 @@
             });
         });
 
-        // Navigate to cart page on cart icon click
+        // Create a container for cart content inside the page (hidden by default)
+        const mainWrapper = document.querySelector('.main-wrapper');
+        let cartContainer = document.getElementById('cart-container');
+        if (!cartContainer) {
+            cartContainer = document.createElement('div');
+            cartContainer.id = 'cart-container';
+            cartContainer.style.position = 'fixed';
+            cartContainer.style.top = '70px';
+            cartContainer.style.right = '20px';
+            cartContainer.style.width = '400px';
+            cartContainer.style.maxHeight = '80vh';
+            cartContainer.style.overflowY = 'auto';
+            cartContainer.style.backgroundColor = 'white';
+            cartContainer.style.border = '1px solid #ccc';
+            cartContainer.style.borderRadius = '10px';
+            cartContainer.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            cartContainer.style.padding = '20px';
+            cartContainer.style.zIndex = '10000';
+            cartContainer.style.display = 'none'; // hidden initially
+            mainWrapper.appendChild(cartContainer);
+        }
+
+        // Toggle cart container visibility on cart icon click
         const cartIcon = document.querySelector('.nav-right a[href="#cart"]');
         if (cartIcon) {
-            cartIcon.removeEventListener('click', renderCartPage); // Remove previous listener if any
             cartIcon.addEventListener('click', function(e) {
                 e.preventDefault();
-                renderCartPage();
+                if (cartContainer.style.display === 'none') {
+                    renderCartContent();
+                    cartContainer.style.display = 'block';
+                } else {
+                    cartContainer.style.display = 'none';
+                }
             });
+        }
+
+        // Function to render cart content inside cartContainer
+        function renderCartContent() {
+            cartContainer.innerHTML = '';
+
+            const cartTitle = document.createElement('h2');
+            cartTitle.textContent = 'Your Cart';
+            cartTitle.style.marginBottom = '20px';
+            cartTitle.style.fontWeight = '700';
+            cartTitle.style.fontSize = '24px';
+            cartContainer.appendChild(cartTitle);
+
+            if (cart.length === 0) {
+                const emptyMsg = document.createElement('p');
+                emptyMsg.textContent = 'Your cart is empty.';
+                cartContainer.appendChild(emptyMsg);
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.style.display = 'flex';
+                itemDiv.style.alignItems = 'center';
+                itemDiv.style.marginBottom = '15px';
+
+                const img = document.createElement('img');
+                img.src = item.image;
+                img.alt = item.title;
+                img.style.width = '60px';
+                img.style.height = '60px';
+                img.style.objectFit = 'cover';
+                img.style.borderRadius = '10px';
+                img.style.marginRight = '15px';
+
+                const infoDiv = document.createElement('div');
+                infoDiv.style.flex = '1';
+
+                const title = document.createElement('div');
+                title.textContent = item.title;
+                title.style.fontWeight = '600';
+                title.style.fontSize = '16px';
+                title.style.marginBottom = '8px';
+
+                // Quantity controls
+                const quantityDiv = document.createElement('div');
+                quantityDiv.style.display = 'flex';
+                quantityDiv.style.alignItems = 'center';
+                quantityDiv.style.gap = '10px';
+                quantityDiv.style.marginBottom = '8px';
+
+                const minusBtn = document.createElement('button');
+                minusBtn.textContent = '-';
+                minusBtn.style.width = '25px';
+                minusBtn.style.height = '25px';
+                minusBtn.style.border = '1px solid #ccc';
+                minusBtn.style.borderRadius = '5px';
+                minusBtn.style.background = 'white';
+                minusBtn.style.cursor = 'pointer';
+
+                const quantityValue = document.createElement('span');
+                quantityValue.textContent = item.quantity || 1;
+                quantityValue.style.minWidth = '20px';
+                quantityValue.style.textAlign = 'center';
+
+                const plusBtn = document.createElement('button');
+                plusBtn.textContent = '+';
+                plusBtn.style.width = '25px';
+                plusBtn.style.height = '25px';
+                plusBtn.style.border = '1px solid #ccc';
+                plusBtn.style.borderRadius = '5px';
+                plusBtn.style.background = 'white';
+                plusBtn.style.cursor = 'pointer';
+
+                quantityDiv.appendChild(minusBtn);
+                quantityDiv.appendChild(quantityValue);
+                quantityDiv.appendChild(plusBtn);
+
+                // Total price for this product
+                const totalPrice = document.createElement('div');
+                const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+                const quantityNum = item.quantity || 1;
+                totalPrice.textContent = 'Total: $' + (priceNumber * quantityNum).toFixed(2);
+                totalPrice.style.fontWeight = '600';
+                totalPrice.style.marginBottom = '8px';
+
+                // Remove button
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'Remove';
+                removeBtn.style.color = '#395144';
+                removeBtn.style.fontSize = '14px';
+                removeBtn.style.cursor = 'pointer';
+                removeBtn.style.textDecoration = 'underline';
+                removeBtn.style.background = 'none';
+                removeBtn.style.border = 'none';
+                removeBtn.style.padding = '0';
+                removeBtn.style.fontFamily = 'inherit';
+
+                removeBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    cart.splice(index, 1);
+                    updateCartCount();
+                    renderCartContent();
+                });
+
+                // Quantity button events
+                minusBtn.addEventListener('click', () => {
+                    if ((item.quantity || 1) > 1) {
+                        item.quantity = (item.quantity || 1) - 1;
+                        quantityValue.textContent = item.quantity;
+                        // Update total price for this product
+                        const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+                        totalPrice.textContent = 'Total: $' + (priceNumber * item.quantity).toFixed(2);
+                        updateCartCount();
+                        updateOrderSummary();
+                    }
+                });
+
+                plusBtn.addEventListener('click', () => {
+                    item.quantity = (item.quantity || 1) + 1;
+                    quantityValue.textContent = item.quantity;
+                    // Update total price for this product
+                    const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+                    totalPrice.textContent = 'Total: $' + (priceNumber * item.quantity).toFixed(2);
+                    updateCartCount();
+                    updateOrderSummary();
+                });
+
+                infoDiv.appendChild(title);
+                infoDiv.appendChild(quantityDiv);
+                infoDiv.appendChild(totalPrice);
+                infoDiv.appendChild(removeBtn);
+
+                itemDiv.appendChild(img);
+                itemDiv.appendChild(infoDiv);
+
+                cartContainer.appendChild(itemDiv);
+            });
+
+            // Order Summary section inside cartContainer
+            const orderSummary = document.createElement('div');
+            orderSummary.style.marginTop = '20px';
+            orderSummary.style.borderTop = '1px solid #ccc';
+            orderSummary.style.paddingTop = '15px';
+
+            const orderTitle = document.createElement('h3');
+            orderTitle.textContent = 'Order Summary';
+            orderTitle.style.marginBottom = '15px';
+            orderTitle.style.fontWeight = '700';
+            orderSummary.appendChild(orderTitle);
+
+            // Subtotal
+            const subtotalDiv = document.createElement('div');
+            subtotalDiv.style.fontWeight = '600';
+            subtotalDiv.style.display = 'flex';
+            subtotalDiv.style.justifyContent = 'space-between';
+            subtotalDiv.style.marginBottom = '10px';
+
+            const subtotalTextSpan = document.createElement('span');
+            const subtotalPriceSpan = document.createElement('span');
+
+            subtotalDiv.appendChild(subtotalTextSpan);
+            subtotalDiv.appendChild(subtotalPriceSpan);
+            orderSummary.appendChild(subtotalDiv);
+
+            // Shipping info
+            const shippingInfo = document.createElement('div');
+            shippingInfo.textContent = '$10 free shipping';
+            shippingInfo.style.background = '#f0f0f0';
+            shippingInfo.style.padding = '8px';
+            shippingInfo.style.borderRadius = '5px';
+            shippingInfo.style.marginBottom = '10px';
+            orderSummary.appendChild(shippingInfo);
+
+            // Taxes
+            const taxesDiv = document.createElement('div');
+            taxesDiv.textContent = 'Taxes';
+            taxesDiv.style.fontWeight = '600';
+            taxesDiv.style.display = 'flex';
+            taxesDiv.style.justifyContent = 'space-between';
+            taxesDiv.style.marginBottom = '10px';
+
+            const taxesValue = document.createElement('span');
+            taxesValue.textContent = 'TBD';
+            taxesDiv.appendChild(taxesValue);
+            orderSummary.appendChild(taxesDiv);
+
+            // Estimated total
+            const estimatedTotalDiv = document.createElement('div');
+            estimatedTotalDiv.textContent = 'Estimated total';
+            estimatedTotalDiv.style.fontWeight = '700';
+            estimatedTotalDiv.style.display = 'flex';
+            estimatedTotalDiv.style.justifyContent = 'space-between';
+            estimatedTotalDiv.style.marginBottom = '20px';
+
+            const estimatedTotalValue = document.createElement('span');
+            estimatedTotalValue.textContent = '$0.00';
+            estimatedTotalDiv.appendChild(estimatedTotalValue);
+            orderSummary.appendChild(estimatedTotalDiv);
+
+            function updateOrderSummary() {
+                const subtotalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+                const subtotalPrice = cart.reduce((acc, item) => {
+                    const priceNum = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+                    return acc + priceNum * (item.quantity || 1);
+                }, 0);
+                subtotalTextSpan.textContent = `Subtotal (${subtotalItems} items)`;
+                subtotalPriceSpan.textContent = '$' + subtotalPrice.toFixed(2);
+                const estimatedTotal = subtotalPrice - 10; // Assuming $10 shipping discount
+                estimatedTotalValue.textContent = '$' + (estimatedTotal > 0 ? estimatedTotal.toFixed(2) : '0.00');
+            }
+
+            updateOrderSummary();
+
+            cartContainer.appendChild(orderSummary);
         }
 
         // Parallax effect for hero section
@@ -2288,7 +2529,7 @@
                                             <span class="star"><i class="fas fa-star"></i></span>
                                             <span class="star"><i class="fas fa-star"></i></span>
                                             <span class="star"><i class="fas fa-star"></i></span>
-                                            <span class="star" style="color: #ddd;"><i class="far fa-star"></i></span>
+                                            <span class="star" style="color: #ddd;"><i class="far fa-star"></i></span>not 
                                             <span class="rating-count">(28)</span>
                                         </div>
                                         <p class="product-price">$52.99</p>

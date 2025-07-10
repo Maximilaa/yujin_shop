@@ -2109,7 +2109,7 @@
         }
 
         // Create a new hidden section for cart page content
-        const mainWrapper = document.querySelector('.main-wrapper');
+        // const mainWrapper = document.querySelector('.main-wrapper'); // Removed duplicate declaration
         const homeSection = document.getElementById('home');
         let cartPageSection = document.getElementById('cart-page-section');
 
@@ -2124,14 +2124,26 @@
             mainWrapper.appendChild(cartPageSection);
         }
 
-        // Modify cart icon click to show cart page section and hide home section
+        // Modify cart icon click to toggle dropdown menu with cart content inside the icon menu
         const cartIcon = document.querySelector('.nav-right a[href="#cart"]');
+        let cartDropdownVisible = false;
+        let cartDropdown = null;
+
         if (cartIcon) {
             cartIcon.addEventListener('click', function(e) {
                 e.preventDefault();
-                homeSection.style.display = 'none';
-                cartPageSection.style.display = 'block';
-                renderCartPageSection();
+                if (cartDropdownVisible) {
+                    // Hide dropdown
+                    if (cartDropdown) {
+                        cartDropdown.remove();
+                        cartDropdown = null;
+                    }
+                    cartDropdownVisible = false;
+                } else {
+                    // Show dropdown
+                    renderCartPageInIcon();
+                    cartDropdownVisible = true;
+                }
             });
         }
 

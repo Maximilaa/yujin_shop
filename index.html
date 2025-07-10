@@ -2261,16 +2261,19 @@
                     totalPrice.style.fontWeight = '600';
                     totalPrice.style.marginBottom = '15px';
 
-                    // Remove link
-                    const removeLink = document.createElement('a');
-                    removeLink.href = '#';
-                    removeLink.textContent = 'Remove';
-                    removeLink.style.color = '#395144';
-                    removeLink.style.fontSize = '16px';
-                    removeLink.style.cursor = 'pointer';
-                    removeLink.style.textDecoration = 'underline';
+                    // Remove button
+                    const removeBtn = document.createElement('button');
+                    removeBtn.textContent = 'Remove';
+                    removeBtn.style.color = '#395144';
+                    removeBtn.style.fontSize = '16px';
+                    removeBtn.style.cursor = 'pointer';
+                    removeBtn.style.textDecoration = 'underline';
+                    removeBtn.style.background = 'none';
+                    removeBtn.style.border = 'none';
+                    removeBtn.style.padding = '0';
+                    removeBtn.style.fontFamily = 'inherit';
 
-                    removeLink.addEventListener('click', (e) => {
+                    removeBtn.addEventListener('click', (e) => {
                         e.preventDefault();
                         cart.splice(index, 1);
                         updateCartCount();

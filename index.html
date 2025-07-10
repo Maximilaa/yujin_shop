@@ -2374,6 +2374,32 @@
             });
         }
 
+        // Wishlist button toggle and add to wishlist functionality
+        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                const productCard = this.closest('.product-card');
+                const title = productCard.querySelector('.product-title').textContent;
+                const price = productCard.querySelector('.product-price').textContent;
+                const image = productCard.querySelector('.product-image img').src;
+
+                // Toggle icon fill
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                }
+
+                // Add to wishlist if not already present
+                const existingIndex = wishlist.findIndex(item => item.title === title);
+                if (existingIndex === -1) {
+                    wishlist.push({ title, price, image, quantity: 1 });
+                }
+            });
+        });
+
         // Add a back button inside cart page to return to home section
         function addBackButton() {
             const backBtn = document.createElement('button');

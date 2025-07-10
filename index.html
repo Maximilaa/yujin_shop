@@ -2069,6 +2069,7 @@
                 if (existingIndex === -1) {
                     cart.push({ title, price, image, quantity: 1 });
                 } else {
+                    // Increment quantity for existing product
                     cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
                 }
 
@@ -2094,35 +2095,6 @@
                 renderCartPage();
             });
         }
-
-        // Add to cart functionality
-        document.querySelectorAll('.product-buttons .btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const productCard = this.closest('.product-card');
-                const title = productCard.querySelector('.product-title').textContent;
-                const price = productCard.querySelector('.product-price').textContent;
-                const image = productCard.querySelector('.product-image img').src;
-
-                // Check if product already in cart
-                const existingIndex = cart.findIndex(item => item.title === title);
-                if (existingIndex === -1) {
-                    cart.push({ title, price, image, quantity: 1 });
-                } else {
-                    cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
-                }
-
-                updateCartCount();
-
-                // Show added animation
-                const originalText = this.innerHTML;
-                if (this.innerText.includes('Add to Cart')) {
-                    this.innerHTML = '<i class="fas fa-check"></i> Added!';
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                    }, 2000);
-                }
-            });
-        });
 
         // Parallax effect for hero section
         window.addEventListener('scroll', () => {

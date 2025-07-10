@@ -2010,17 +2010,247 @@
             }
         });
 
-        // Wishlist button toggle
-        document.querySelectorAll('.wishlist-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const icon = this.querySelector('i');
-                if (icon.classList.contains('far')) {
-                    icon.classList.remove('far');
-                    icon.classList.add('fas');
-                } else {
-                    icon.classList.remove('fas');
-                    icon.classList.add('far');
-                }
+        // Wishlist button toggle and wishlist page rendering
+        const wishlist = [];
+
+        const wishlistIcon = document.querySelector('.nav-right a[href="#wishlist"]');
+        const mainWrapper = document.querySelector('.main-wrapper');
+        const homeSection = document.getElementById('home');
+
+        function renderWishlistPage() {
+            mainWrapper.innerHTML = '';
+
+            const headerHTML = `
+                <header>
+                    <div class="container">
+                        <nav>
+                            <div class="nav-left">
+                                <div class="search-container">
+                                    <input type="text" placeholder="Search..." class="search-input">
+                                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                            <div class="logo">YUJINSHOP</div>
+                            <div class="nav-right">
+                                <a href="#wishlist" class="nav-icon"><i class="fas fa-heart"></i></a>
+                                <a href="#cart" class="nav-icon"><i class="fas fa-shopping-bag"></i></a>
+                                <a href="#chat" class="nav-icon"><i class="far fa-comment"></i></a>
+                                <a href="#user" class="nav-icon"><i class="far fa-user"></i></a>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="secondary-nav" id="nav-container">
+                        <div class="container">
+                            <ul class="nav-links">
+                                <li><a href="#home">Home</a></li>
+                                <li><a href="#about">About Us</a></li>
+                                <li><a href="#products">Product</a></li>
+                                <li><a href="#review">Review</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </header>
+            `;
+
+            mainWrapper.insertAdjacentHTML('beforeend', headerHTML);
+
+            const wishlistSection = document.createElement('section');
+            wishlistSection.style.padding = '40px';
+            wishlistSection.style.maxWidth = '1200px';
+            wishlistSection.style.margin = '0 auto';
+
+            const title = document.createElement('h2');
+            title.textContent = 'Favorite';
+            title.style.fontWeight = '700';
+            title.style.fontSize = '28px';
+            title.style.marginBottom = '5px';
+            wishlistSection.appendChild(title);
+
+            const subtitle = document.createElement('p');
+            subtitle.textContent = 'Your saved product';
+            subtitle.style.marginBottom = '20px';
+            wishlistSection.appendChild(subtitle);
+
+            if (wishlist.length === 0) {
+                const emptyMsg = document.createElement('p');
+                emptyMsg.textContent = 'Your wishlist is empty.';
+                wishlistSection.appendChild(emptyMsg);
+            } else {
+                wishlist.forEach((item, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.style.display = 'flex';
+                    itemDiv.style.justifyContent = 'space-between';
+                    itemDiv.style.alignItems = 'center';
+                    itemDiv.style.borderBottom = '1px solid #ccc';
+                    itemDiv.style.padding = '20px 0';
+
+                    const leftDiv = document.createElement('div');
+                    leftDiv.style.display = 'flex';
+                    leftDiv.style.gap = '20px';
+                    leftDiv.style.flex = '1';
+
+                    const img = document.createElement('img');
+                    img.src = item.image || 'https://via.placeholder.com/100';
+                    img.alt = item.title;
+                    img.style.width = '100px';
+                    img.style.height = '100px';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '10px';
+
+                    const infoDiv = document.createElement('div');
+                    infoDiv.style.flex = '1';
+
+                    const productName = document.createElement('h3');
+                    productName.textContent = item.title;
+                    productName.style.margin = '0 0 5px 0';
+
+                    const ratingDiv = document.createElement('div');
+                    ratingDiv.style.display = 'flex';
+                    ratingDiv.style.alignItems = 'center';
+                    ratingDiv.style.gap = '10px';
+                    ratingDiv.style.marginBottom = '10px';
+
+                    const starSpan = document.createElement('span');
+                    starSpan.textContent = '★ 4.5';
+                    starSpan.style.color = '#FFD700';
+                    starSpan.style.fontWeight = '700';
+
+                    const reviewCount = document.createElement('span');
+                    reviewCount.textContent = '120 reviews';
+                    reviewCount.style.color = '#666';
+
+                    ratingDiv.appendChild(starSpan);
+                    ratingDiv.appendChild(reviewCount);
+
+                    const description = document.createElement('p');
+                    description.textContent = item.description || 'Product description goes here.';
+                    description.style.marginBottom = '10px';
+
+                    const availability = document.createElement('span');
+                    availability.textContent = 'Available';
+                    availability.style.backgroundColor = '#90ee90';
+                    availability.style.color = '#006400';
+                    availability.style.padding = '3px 8px';
+                    availability.style.borderRadius = '5px';
+                    availability.style.fontSize = '12px';
+                    availability.style.fontWeight = '600';
+
+                    infoDiv.appendChild(productName);
+                    infoDiv.appendChild(ratingDiv);
+                    infoDiv.appendChild(description);
+                    infoDiv.appendChild(availability);
+
+                    leftDiv.appendChild(img);
+                    leftDiv.appendChild(infoDiv);
+
+                    const rightDiv = document.createElement('div');
+                    rightDiv.style.textAlign = 'right';
+
+                    const quantityLabel = document.createElement('div');
+                    quantityLabel.textContent = 'Quantity';
+                    quantityLabel.style.fontWeight = '600';
+                    quantityLabel.style.marginBottom = '5px';
+
+                    const quantityControls = document.createElement('div');
+                    quantityControls.style.display = 'flex';
+                    quantityControls.style.alignItems = 'center';
+                    quantityControls.style.justifyContent = 'flex-end';
+                    quantityControls.style.gap = '10px';
+                    quantityControls.style.marginBottom = '10px';
+
+                    const minusBtn = document.createElement('button');
+                    minusBtn.textContent = '-';
+                    minusBtn.style.width = '30px';
+                    minusBtn.style.height = '30px';
+                    minusBtn.style.border = '1px solid #ccc';
+                    minusBtn.style.borderRadius = '5px';
+                    minusBtn.style.background = 'white';
+                    minusBtn.style.cursor = 'pointer';
+
+                    const quantityValue = document.createElement('span');
+                    quantityValue.textContent = item.quantity || 1;
+                    quantityValue.style.minWidth = '25px';
+                    quantityValue.style.textAlign = 'center';
+
+                    const plusBtn = document.createElement('button');
+                    plusBtn.textContent = '+';
+                    plusBtn.style.width = '30px';
+                    plusBtn.style.height = '30px';
+                    plusBtn.style.border = '1px solid #ccc';
+                    plusBtn.style.borderRadius = '5px';
+                    plusBtn.style.background = 'white';
+                    plusBtn.style.cursor = 'pointer';
+
+                    quantityControls.appendChild(minusBtn);
+                    quantityControls.appendChild(quantityValue);
+                    quantityControls.appendChild(plusBtn);
+
+                    const totalPrice = document.createElement('div');
+                    const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+                    const quantityNum = item.quantity || 1;
+                    totalPrice.textContent = 'Total\n$' + (priceNumber * quantityNum).toFixed(2);
+                    totalPrice.style.fontWeight = '600';
+                    totalPrice.style.marginBottom = '10px';
+
+                    const buyNowLink = document.createElement('a');
+                    buyNowLink.href = '#';
+                    buyNowLink.textContent = 'Buy Now';
+                    buyNowLink.style.color = 'blue';
+                    buyNowLink.style.marginRight = '10px';
+                    buyNowLink.style.cursor = 'pointer';
+
+                    const removeLink = document.createElement('a');
+                    removeLink.href = '#';
+                    removeLink.textContent = 'Remove';
+                    removeLink.style.color = 'red';
+                    removeLink.style.cursor = 'pointer';
+
+                    buyNowLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        alert('Buy Now clicked for ' + item.title);
+                    });
+
+                    removeLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        wishlist.splice(index, 1);
+                        renderWishlistPage();
+                    });
+
+                    rightDiv.appendChild(quantityLabel);
+                    rightDiv.appendChild(quantityControls);
+                    rightDiv.appendChild(totalPrice);
+                    rightDiv.appendChild(buyNowLink);
+                    rightDiv.appendChild(removeLink);
+
+                    itemDiv.appendChild(leftDiv);
+                    itemDiv.appendChild(rightDiv);
+
+                    wishlistSection.appendChild(itemDiv);
+
+                    // Quantity button events
+                    minusBtn.addEventListener('click', () => {
+                        if ((item.quantity || 1) > 1) {
+                            item.quantity = (item.quantity || 1) - 1;
+                            quantityValue.textContent = item.quantity;
+                            renderWishlistPage();
+                        }
+                    });
+
+                    plusBtn.addEventListener('click', () => {
+                        item.quantity = (item.quantity || 1) + 1;
+                        quantityValue.textContent = item.quantity;
+                        renderWishlistPage();
+                    });
+                });
+            }
+
+            mainWrapper.appendChild(wishlistSection);
+        }
+
+        if (wishlistIcon) {
+            wishlistIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+                renderWishlistPage();
             });
         });
 

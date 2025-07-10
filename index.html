@@ -2317,7 +2317,6 @@
         });
 
         // Create a container for cart content inside the page (hidden by default)
-        const mainWrapper = document.querySelector('.main-wrapper');
         let cartContainer = document.getElementById('cart-container');
         if (!cartContainer) {
             cartContainer = document.createElement('div');
@@ -2339,8 +2338,6 @@
         }
 
         // Create a new hidden section for cart page content
-        // const mainWrapper = document.querySelector('.main-wrapper'); // Removed duplicate declaration
-        const homeSection = document.getElementById('home');
         let cartPageSection = document.getElementById('cart-page-section');
 
         if (!cartPageSection) {

@@ -3257,6 +3257,19 @@
         // Initialize event listeners on page load
         initializeEventListeners();
 
+        // Add event listener for profile icon to render profile page (sign-up/login)
+        const profileIcon = document.querySelector('.nav-right a[href="#user"]');
+        if (profileIcon) {
+            profileIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (typeof renderProfilePage === 'function') {
+                    renderProfilePage();
+                } else {
+                    console.warn('renderProfilePage function not found');
+                }
+            });
+        }
+
         // Add CSS for cart dropdown menu
         const style = document.createElement('style');
         style.textContent = `

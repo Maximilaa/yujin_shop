@@ -3095,239 +3095,278 @@
 
         // Function to render the full cart page replacing main content
         function renderCartPage() {
-            const mainWrapper = document.querySelector('.main-wrapper');
-            // Save current main content to restore later
-            if (!mainWrapper.dataset.originalContent) {
-                mainWrapper.dataset.originalContent = mainWrapper.innerHTML;
-            }
+    const mainWrapper = document.querySelector('.main-wrapper');
+    mainWrapper.innerHTML = '';
+    // Create cart page container
+    const cartPage = document.createElement('div');
+    cartPage.style.padding = '40px';
+    cartPage.style.maxWidth = '1200px';
+    cartPage.style.margin = '0 auto';
+    cartPage.style.display = 'flex';
+    cartPage.style.justifyContent = 'space-between';
+    cartPage.style.gap = '40px';
 
-            // Container for cart content
-            const container = document.createElement('div');
-            container.style.display = 'flex';
-            container.style.justifyContent = 'space-between';
-            container.style.gap = '20px';
+    // Left side: Your Bag
+    const yourBag = document.createElement('div');
+    yourBag.style.flex = '1';
 
-            // Left side: Your Bag
-            const yourBag = document.createElement('div');
-            yourBag.style.flex = '1';
+    const yourBagTitle = document.createElement('h2');
+    yourBagTitle.textContent = 'Your Bag';
+    yourBagTitle.style.marginBottom = '30px';
+    yourBagTitle.style.fontWeight = '700';
+    yourBagTitle.style.fontSize = '28px';
+    yourBag.appendChild(yourBagTitle);
 
-            const yourBagTitle = document.createElement('h3');
-            yourBagTitle.textContent = 'Your Bag';
-            yourBagTitle.style.marginBottom = '20px';
-            yourBagTitle.style.fontWeight = '700';
-            yourBag.appendChild(yourBagTitle);
+    if (cart.length === 0) {
+        const emptyMsg = document.createElement('p');
+        emptyMsg.textContent = 'Your cart is empty.';
+        yourBag.appendChild(emptyMsg);
+    } else {
+        cart.forEach((item, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.style.display = 'flex';
+            itemDiv.style.alignItems = 'center';
+            itemDiv.style.marginBottom = '30px';
 
-            cart.forEach((item, index) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.style.display = 'flex';
-                itemDiv.style.alignItems = 'center';
-                itemDiv.style.marginBottom = '20px';
+            const img = document.createElement('img');
+            img.src = item.image;
+            img.alt = item.title;
+            img.style.width = '120px';
+            img.style.height = '120px';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '15px';
+            img.style.marginRight = '25px';
 
-                const img = document.createElement('img');
-                img.src = item.image;
-                img.alt = item.title;
-                img.style.width = '80px';
-                img.style.height = '80px';
-                img.style.objectFit = 'cover';
-                img.style.borderRadius = '10px';
-                img.style.marginRight = '15px';
+            const infoDiv = document.createElement('div');
+            infoDiv.style.flex = '1';
 
-                    const infoDiv = document.createElement('div');
-                    infoDiv.style.flex = '1';
+            const title = document.createElement('div');
+            title.textContent = item.title;
+            title.style.fontWeight = '700';
+            title.style.fontSize = '20px';
+            title.style.marginBottom = '15px';
 
-                const title = document.createElement('div');
-                title.textContent = item.title;
-                title.style.fontWeight = '700';
-                title.style.fontSize = '16px';
-                title.style.marginBottom = '10px';
+            // Quantity controls
+            const quantityDiv = document.createElement('div');
+            quantityDiv.style.display = 'flex';
+            quantityDiv.style.alignItems = 'center';
+            quantityDiv.style.gap = '15px';
+            quantityDiv.style.marginBottom = '15px';
 
-                // Quantity controls
-                const quantityDiv = document.createElement('div');
-                quantityDiv.style.display = 'flex';
-                quantityDiv.style.alignItems = 'center';
-                quantityDiv.style.gap = '10px';
-                quantityDiv.style.marginBottom = '10px';
+            const quantityLabel = document.createElement('span');
+            quantityLabel.textContent = 'Quantity';
+            quantityLabel.style.fontWeight = '600';
+            quantityLabel.style.marginRight = '15px';
 
-                const quantityLabel = document.createElement('span');
-                quantityLabel.textContent = 'Quantity';
-                quantityLabel.style.fontWeight = '600';
-                quantityLabel.style.marginRight = '10px';
+            const minusBtn = document.createElement('button');
+            minusBtn.textContent = '-';
+            minusBtn.style.width = '30px';
+            minusBtn.style.height = '30px';
+            minusBtn.style.border = '1px solid #ccc';
+            minusBtn.style.borderRadius = '5px';
+            minusBtn.style.background = 'white';
+            minusBtn.style.cursor = 'pointer';
 
-                const minusBtn = document.createElement('button');
-                minusBtn.textContent = '-';
-                minusBtn.style.width = '25px';
-                minusBtn.style.height = '25px';
-                minusBtn.style.border = '1px solid #ccc';
-                minusBtn.style.borderRadius = '4px';
-                minusBtn.style.background = 'white';
-                minusBtn.style.cursor = 'pointer';
+            const quantityValue = document.createElement('span');
+            quantityValue.textContent = item.quantity || 1;
+            quantityValue.style.minWidth = '25px';
+            quantityValue.style.textAlign = 'center';
 
-                const quantityValue = document.createElement('span');
-                quantityValue.textContent = item.quantity || 1;
-                quantityValue.style.minWidth = '20px';
-                quantityValue.style.textAlign = 'center';
+            const plusBtn = document.createElement('button');
+            plusBtn.textContent = '+';
+            plusBtn.style.width = '30px';
+            plusBtn.style.height = '30px';
+            plusBtn.style.border = '1px solid #ccc';
+            plusBtn.style.borderRadius = '5px';
+            plusBtn.style.background = 'white';
+            plusBtn.style.cursor = 'pointer';
 
-                const plusBtn = document.createElement('button');
-                plusBtn.textContent = '+';
-                plusBtn.style.width = '25px';
-                plusBtn.style.height = '25px';
-                plusBtn.style.border = '1px solid #ccc';
-                plusBtn.style.borderRadius = '4px';
-                plusBtn.style.background = 'white';
-                plusBtn.style.cursor = 'pointer';
+            quantityDiv.appendChild(quantityLabel);
+            quantityDiv.appendChild(minusBtn);
+            quantityDiv.appendChild(quantityValue);
+            quantityDiv.appendChild(plusBtn);
 
-                quantityDiv.appendChild(quantityLabel);
-                quantityDiv.appendChild(minusBtn);
-                quantityDiv.appendChild(quantityValue);
-                quantityDiv.appendChild(plusBtn);
+            // Total price for this product
+            const totalPrice = document.createElement('div');
+            const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+            const quantityNum = item.quantity || 1;
+            totalPrice.textContent = '$' + (priceNumber * quantityNum).toFixed(2);
+            totalPrice.style.fontWeight = '600';
+            totalPrice.style.marginBottom = '15px';
 
-                // Total price for this product
-                const totalPrice = document.createElement('div');
+            // Remove button
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'Remove';
+            removeBtn.style.color = '#395144';
+            removeBtn.style.fontSize = '16px';
+            removeBtn.style.cursor = 'pointer';
+            removeBtn.style.textDecoration = 'underline';
+            removeBtn.style.background = 'none';
+            removeBtn.style.border = 'none';
+            removeBtn.style.padding = '0';
+            removeBtn.style.fontFamily = 'inherit';
+
+            removeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                cart.splice(index, 1);
+                updateCartCount();
+                renderCartPage();
+            });
+
+            // Quantity button events
+            minusBtn.addEventListener('click', () => {
+                if ((item.quantity || 1) > 1) {
+                    item.quantity = (item.quantity || 1) - 1;
+                    quantityValue.textContent = item.quantity;
+                    const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+                    totalPrice.textContent = '$' + (priceNumber * item.quantity).toFixed(2);
+                    updateCartCount();
+                    renderCartPage();
+                }
+            });
+
+            plusBtn.addEventListener('click', () => {
+                item.quantity = (item.quantity || 1) + 1;
+                quantityValue.textContent = item.quantity;
                 const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
-                const quantityNum = item.quantity || 1;
-                totalPrice.textContent = 'Total: $' + (priceNumber * quantityNum).toFixed(2);
-                totalPrice.style.fontWeight = '600';
-                totalPrice.style.marginBottom = '10px';
-
-                // Remove link
-                const removeLink = document.createElement('a');
-                removeLink.href = '#';
-                removeLink.textContent = 'Remove';
-                removeLink.style.color = '#395144';
-                removeLink.style.fontSize = '14px';
-                removeLink.style.cursor = 'pointer';
-                removeLink.style.textDecoration = 'underline';
-
-                removeLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    cart.splice(index, 1);
-                    updateCartCount();
-                    renderCartItems();
-                });
-
-                // Quantity button events
-                minusBtn.addEventListener('click', () => {
-                    if ((item.quantity || 1) > 1) {
-                        item.quantity = (item.quantity || 1) - 1;
-                        updateCartCount();
-                        renderCartItems();
-                    }
-                });
-
-                plusBtn.addEventListener('click', () => {
-                    item.quantity = (item.quantity || 1) + 1;
-                    updateCartCount();
-                    renderCartItems();
-                });
-
-                infoDiv.appendChild(title);
-                infoDiv.appendChild(quantityDiv);
-                infoDiv.appendChild(totalPrice);
-                infoDiv.appendChild(removeLink);
-
-                itemDiv.appendChild(img);
-                itemDiv.appendChild(infoDiv);
-
-                yourBag.appendChild(itemDiv);
+                totalPrice.textContent = '$' + (priceNumber * item.quantity).toFixed(2);
+                updateCartCount();
+                renderCartPage();
             });
 
-            // Right side: Order Summary
-            const orderSummary = document.createElement('div');
-            orderSummary.style.width = '300px';
+            infoDiv.appendChild(title);
+            infoDiv.appendChild(quantityDiv);
+            infoDiv.appendChild(totalPrice);
+            infoDiv.appendChild(removeBtn);
 
-            const orderTitle = document.createElement('h3');
-            orderTitle.textContent = 'Order Summary';
-            orderTitle.style.marginBottom = '20px';
-            orderSummary.appendChild(orderTitle);
+            itemDiv.appendChild(img);
+            itemDiv.appendChild(infoDiv);
 
-            // Subtotal
-            const subtotalDiv = document.createElement('div');
-            const subtotalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
-            const subtotalPrice = cart.reduce((acc, item) => {
-                const priceNum = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
-                return acc + priceNum * (item.quantity || 1);
-            }, 0);
-            subtotalDiv.textContent = `Subtotal (${subtotalItems} items)`;
-            subtotalDiv.style.fontWeight = '600';
-            subtotalDiv.style.display = 'flex';
-            subtotalDiv.style.justifyContent = 'space-between';
-            subtotalDiv.style.marginBottom = '10px';
+            yourBag.appendChild(itemDiv);
+        });
+    }
 
-            const subtotalPriceSpan = document.createElement('span');
-            subtotalPriceSpan.textContent = '$' + subtotalPrice.toFixed(2);
-            subtotalDiv.appendChild(subtotalPriceSpan);
-            orderSummary.appendChild(subtotalDiv);
+    // Right side: Order Summary
+    const orderSummary = document.createElement('div');
+    orderSummary.style.width = '350px';
 
-            // Shipping info
-            const shippingInfo = document.createElement('div');
-            shippingInfo.textContent = '$10 free shipping';
-            shippingInfo.style.background = '#f0f0f0';
-            shippingInfo.style.padding = '8px';
-            shippingInfo.style.borderRadius = '5px';
-            shippingInfo.style.marginBottom = '10px';
-            orderSummary.appendChild(shippingInfo);
+    const orderTitle = document.createElement('h2');
+    orderTitle.textContent = 'Order Summary';
+    orderTitle.style.marginBottom = '30px';
+    orderTitle.style.fontWeight = '700';
+    orderTitle.style.fontSize = '28px';
+    orderSummary.appendChild(orderTitle);
 
-            // Taxes
-            const taxesDiv = document.createElement('div');
-            taxesDiv.textContent = 'Taxes';
-            taxesDiv.style.fontWeight = '600';
-            taxesDiv.style.display = 'flex';
-            taxesDiv.style.justifyContent = 'space-between';
-            taxesDiv.style.marginBottom = '10px';
+    // Subtotal
+    const subtotalDiv = document.createElement('div');
+    subtotalDiv.style.fontWeight = '600';
+    subtotalDiv.style.display = 'flex';
+    subtotalDiv.style.justifyContent = 'space-between';
+    subtotalDiv.style.marginBottom = '15px';
 
-            const taxesValue = document.createElement('span');
-            taxesValue.textContent = 'TBD';
-            taxesDiv.appendChild(taxesValue);
-            orderSummary.appendChild(taxesDiv);
+    const subtotalTextSpan = document.createElement('span');
+    const subtotalPriceSpan = document.createElement('span');
+    const estimatedTotalValue = document.createElement('span');
 
-            // Estimated total
-            const estimatedTotalDiv = document.createElement('div');
-            const estimatedTotal = subtotalPrice - 10; // Assuming $10 shipping discount
-            estimatedTotalDiv.textContent = 'Estimated total';
-            estimatedTotalDiv.style.fontWeight = '700';
-            estimatedTotalDiv.style.display = 'flex';
-            estimatedTotalDiv.style.justifyContent = 'space-between';
-            estimatedTotalDiv.style.marginBottom = '20px';
+    function updateSubtotal() {
+        const subtotalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+        const subtotalPrice = cart.reduce((acc, item) => {
+            const priceNum = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+            return acc + priceNum * (item.quantity || 1);
+        }, 0);
+        subtotalTextSpan.textContent = `Subtotal (${subtotalItems} items)`;
+        subtotalPriceSpan.textContent = '$' + subtotalPrice.toFixed(2);
+        const estimatedTotal = subtotalPrice - 10;
+        estimatedTotalValue.textContent = '$' + (estimatedTotal > 0 ? estimatedTotal.toFixed(2) : '0.00');
+    }
 
-            const estimatedTotalValue = document.createElement('span');
-            estimatedTotalValue.textContent = '$' + (estimatedTotal > 0 ? estimatedTotal.toFixed(2) : '0.00');
-            estimatedTotalDiv.appendChild(estimatedTotalValue);
-            orderSummary.appendChild(estimatedTotalDiv);
+    subtotalDiv.appendChild(subtotalTextSpan);
+    subtotalDiv.appendChild(subtotalPriceSpan);
+    orderSummary.appendChild(subtotalDiv);
 
-            // Payment buttons
-            const paymentMethods = ['Paypal', 'Mandiri', 'Dana', 'BCA'];
-            paymentMethods.forEach(method => {
-                const btn = document.createElement('button');
-                btn.textContent = method;
-                btn.style.width = '100%';
-                btn.style.padding = '10px';
-                btn.style.marginBottom = '10px';
-                btn.style.border = 'none';
-                btn.style.borderRadius = '5px';
-                btn.style.background = '#395144';
-                btn.style.color = 'white';
-                btn.style.fontWeight = '600';
-                btn.style.cursor = 'pointer';
-                orderSummary.appendChild(btn);
+    // Shipping info
+    const shippingInfo = document.createElement('div');
+    shippingInfo.textContent = '$10 free shipping';
+    shippingInfo.style.background = '#f0f0f0';
+    shippingInfo.style.padding = '10px';
+    shippingInfo.style.borderRadius = '5px';
+    shippingInfo.style.marginBottom = '15px';
+    orderSummary.appendChild(shippingInfo);
+
+    // Taxes
+    const taxesDiv = document.createElement('div');
+    taxesDiv.textContent = 'Taxes';
+    taxesDiv.style.fontWeight = '600';
+    taxesDiv.style.display = 'flex';
+    taxesDiv.style.justifyContent = 'space-between';
+    taxesDiv.style.marginBottom = '15px';
+
+    const taxesValue = document.createElement('span');
+    taxesValue.textContent = 'TBD';
+    taxesDiv.appendChild(taxesValue);
+    orderSummary.appendChild(taxesDiv);
+
+    // Estimated total
+    const estimatedTotalDiv = document.createElement('div');
+    estimatedTotalDiv.textContent = 'Estimated total';
+    estimatedTotalDiv.style.fontWeight = '700';
+    estimatedTotalDiv.style.display = 'flex';
+    estimatedTotalDiv.style.justifyContent = 'space-between';
+    estimatedTotalDiv.style.marginBottom = '30px';
+
+    estimatedTotalDiv.appendChild(estimatedTotalValue);
+    orderSummary.appendChild(estimatedTotalDiv);
+
+    updateSubtotal();
+
+    // Payment buttons
+    const paymentMethods = ['Paypal', 'Mandiri', 'Dana', 'BCA'];
+    let selectedPaymentMethod = null;
+    paymentMethods.forEach(method => {
+        const btn = document.createElement('button');
+        btn.textContent = method;
+        btn.style.width = '100%';
+        btn.style.padding = '12px';
+        btn.style.marginBottom = '15px';
+        btn.style.border = 'none';
+        btn.style.borderRadius = '5px';
+        btn.style.background = '#395144';
+        btn.style.color = 'white';
+        btn.style.fontWeight = '600';
+        btn.style.cursor = 'pointer';
+
+        btn.addEventListener('click', () => {
+            const allButtons = orderSummary.querySelectorAll('button');
+            allButtons.forEach(b => {
+                b.style.background = '#395144';
+                b.style.color = 'white';
             });
+            btn.style.background = '#2C3E36';
+            btn.style.color = '#fff';
+            selectedPaymentMethod = method;
+            console.log('Selected payment method:', selectedPaymentMethod);
+        });
 
-            // Shipping & Return Information
-            const shippingReturnInfo = document.createElement('div');
-            shippingReturnInfo.style.background = '#f0f0f0';
-            shippingReturnInfo.style.padding = '15px';
-            shippingReturnInfo.style.borderRadius = '5px';
-            shippingReturnInfo.style.fontSize = '12px';
-            shippingReturnInfo.style.color = '#333';
-            shippingReturnInfo.style.marginTop = '20px';
-            shippingReturnInfo.textContent = 'Shipping & Return Information: Eco Strawbag products will be shipped within 1–3 business days after payment is confirmed. We use trusted shipping services such as JNE, J&T, or Sicepat. The estimated delivery time is 2–5 business days depending on the destination. Free shipping promotions are available for certain purchases. If you receive a product that is damaged, defective, or does not match your order, you may request a return within 7 days of receiving the item. Please ensure the product is unused, the original tags are still attached, and it is returned in its original packaging. Return shipping costs are the responsibility of the buyer, unless the error was on our part.';
+        orderSummary.appendChild(btn);
+    });
 
-            orderSummary.appendChild(shippingReturnInfo);
+    // Shipping & Return Information
+    const shippingReturnInfo = document.createElement('div');
+    shippingReturnInfo.style.background = '#f0f0f0';
+    shippingReturnInfo.style.padding = '20px';
+    shippingReturnInfo.style.borderRadius = '5px';
+    shippingReturnInfo.style.fontSize = '14px';
+    shippingReturnInfo.style.color = '#333';
+    shippingReturnInfo.textContent = 'Shipping & Return Information: Eco Strawbag products will be shipped within 1–3 business days after payment is confirmed. We use trusted shipping services such as JNE, J&T, or Sicepat. The estimated delivery time is 2–5 business days depending on the destination. Free shipping promotions are available for certain purchases. If you receive a product that is damaged, defective, or does not match your order, you may request a return within 7 days of receiving the item. Please ensure the product is unused, the original tags are still attached, and it is returned in its original packaging. Return shipping costs are the responsibility of the buyer, unless the error was on our part.';
 
-            container.appendChild(yourBag);
-            container.appendChild(orderSummary);
+    orderSummary.appendChild(shippingReturnInfo);
 
-            dropdown.appendChild(container);
-        }
+    cartPage.appendChild(yourBag);
+    cartPage.appendChild(orderSummary);
+
+    mainWrapper.appendChild(cartPage);
+}
+
 
         // Function to re-initialize event listeners after restoring main content
         function initializeEventListeners() {

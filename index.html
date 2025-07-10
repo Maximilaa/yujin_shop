@@ -3262,6 +3262,7 @@
         if (profileIcon) {
             profileIcon.addEventListener('click', function(e) {
                 e.preventDefault();
+                console.log('User icon clicked');
                 if (typeof renderProfilePage === 'function') {
                     renderProfilePage();
                 } else {

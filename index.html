@@ -2400,6 +2400,168 @@
             });
         });
 
+        // Chat icon click handler and chat page rendering
+        const chatIcon = document.querySelector('.nav-right a[href="#chat"]');
+
+        function renderChatPage() {
+            mainWrapper.innerHTML = '';
+
+            const headerHTML = `
+                <header>
+                    <div class="container">
+                        <nav>
+                            <div class="nav-left">
+                                <div class="search-container">
+                                    <input type="text" placeholder="Search..." class="search-input">
+                                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                            <div class="logo">YUJINSHOP</div>
+                            <div class="nav-right">
+                                <a href="#wishlist" class="nav-icon"><i class="far fa-heart"></i></a>
+                                <a href="#cart" class="nav-icon"><i class="fas fa-shopping-bag"></i></a>
+                                <a href="#chat" class="nav-icon"><i class="far fa-comment"></i></a>
+                                <a href="#user" class="nav-icon"><i class="far fa-user"></i></a>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="secondary-nav" id="nav-container">
+                        <div class="container">
+                            <ul class="nav-links">
+                                <li><a href="#home">Home</a></li>
+                                <li><a href="#about">About Us</a></li>
+                                <li><a href="#products">Product</a></li>
+                                <li><a href="#review">Review</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </header>
+            `;
+
+            mainWrapper.insertAdjacentHTML('beforeend', headerHTML);
+
+            const chatSection = document.createElement('section');
+            chatSection.style.padding = '40px';
+            chatSection.style.maxWidth = '1200px';
+            chatSection.style.margin = '0 auto';
+
+            const title = document.createElement('h2');
+            title.textContent = "Customer’s Support Chat";
+            title.style.fontWeight = '700';
+            title.style.fontSize = '28px';
+            title.style.marginBottom = '30px';
+            chatSection.appendChild(title);
+
+            // Chat messages container
+            const messagesContainer = document.createElement('div');
+            messagesContainer.style.display = 'flex';
+            messagesContainer.style.flexDirection = 'column';
+            messagesContainer.style.gap = '20px';
+
+            // User message bubble
+            const userMessage = document.createElement('div');
+            userMessage.style.backgroundColor = '#d3d3d3';
+            userMessage.style.borderRadius = '10px';
+            userMessage.style.padding = '15px';
+            userMessage.style.maxWidth = '70%';
+            userMessage.style.alignSelf = 'flex-start';
+            userMessage.style.position = 'relative';
+
+            const userName = document.createElement('strong');
+            userName.textContent = 'vania';
+            userName.style.display = 'block';
+            userName.style.marginBottom = '8px';
+
+            const userText = document.createElement('p');
+            userText.textContent = 'Hello, is this product still available? I am planning to order 20 pieces of this design. Please let me know. Thank you.';
+
+            const userTime = document.createElement('span');
+            userTime.textContent = '1 hr ago';
+            userTime.style.position = 'absolute';
+            userTime.style.top = '10px';
+            userTime.style.right = '10px';
+            userTime.style.fontSize = '12px';
+            userTime.style.color = '#555';
+
+            userMessage.appendChild(userName);
+            userMessage.appendChild(userText);
+            userMessage.appendChild(userTime);
+
+            // Admin message bubble
+            const adminMessage = document.createElement('div');
+            adminMessage.style.backgroundColor = '#d3d3d3';
+            adminMessage.style.borderRadius = '10px';
+            adminMessage.style.padding = '15px';
+            adminMessage.style.maxWidth = '70%';
+            adminMessage.style.alignSelf = 'flex-end';
+            adminMessage.style.position = 'relative';
+
+            const adminName = document.createElement('strong');
+            adminName.textContent = 'Admin';
+            adminName.style.display = 'block';
+            adminName.style.marginBottom = '8px';
+
+            const adminText = document.createElement('p');
+            adminText.textContent = 'Hello, thank you for contacting us. Yes, the stock for that design is currently available. You can go ahead and order 20 pieces. If you have any other questions or need assistance with your order, please feel free to reach out. Thank you.';
+
+            const adminTime = document.createElement('span');
+            adminTime.textContent = 'June 22, 13:20pm';
+            adminTime.style.position = 'absolute';
+            adminTime.style.top = '10px';
+            adminTime.style.left = '10px';
+            adminTime.style.fontSize = '12px';
+            adminTime.style.color = '#555';
+
+            adminMessage.appendChild(adminName);
+            adminMessage.appendChild(adminText);
+            adminMessage.appendChild(adminTime);
+
+            messagesContainer.appendChild(userMessage);
+            messagesContainer.appendChild(adminMessage);
+
+            chatSection.appendChild(messagesContainer);
+
+            // Message input container
+            const inputContainer = document.createElement('div');
+            inputContainer.style.display = 'flex';
+            inputContainer.style.alignItems = 'center';
+            inputContainer.style.marginTop = '30px';
+            inputContainer.style.backgroundColor = '#d3d3d3';
+            inputContainer.style.borderRadius = '10px';
+            inputContainer.style.padding = '10px 15px';
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = 'Write a message...';
+            input.style.flex = '1';
+            input.style.border = 'none';
+            input.style.outline = 'none';
+            input.style.backgroundColor = 'transparent';
+            input.style.fontSize = '16px';
+
+            const emojiButton = document.createElement('button');
+            emojiButton.innerHTML = '<i class="far fa-smile"></i>';
+            emojiButton.style.background = 'none';
+            emojiButton.style.border = 'none';
+            emojiButton.style.fontSize = '24px';
+            emojiButton.style.cursor = 'pointer';
+            emojiButton.style.color = '#555';
+
+            inputContainer.appendChild(input);
+            inputContainer.appendChild(emojiButton);
+
+            chatSection.appendChild(inputContainer);
+
+            mainWrapper.appendChild(chatSection);
+        }
+
+        if (chatIcon) {
+            chatIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+                renderChatPage();
+            });
+        }
+
         // Add a back button inside cart page to return to home section
         function addBackButton() {
             const backBtn = document.createElement('button');

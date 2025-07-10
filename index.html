@@ -1960,9 +1960,13 @@
         // --- END OF FIXES ---
 
 
-        // Smooth scrolling for navigation links
+        // Smooth scrolling for navigation links, excluding wishlist link
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') === '#wishlist') {
+                    // Do not prevent default for wishlist link to allow click event
+                    return;
+                }
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
                 const target = document.querySelector(targetId);

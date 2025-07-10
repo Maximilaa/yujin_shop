@@ -2108,12 +2108,26 @@
             mainWrapper.appendChild(cartContainer);
         }
 
-        // Remove dropdown/cart icon area rendering and implement full page cart view
+        // Modify cart icon click to toggle dropdown menu with cart content inside the icon menu
         const cartIcon = document.querySelector('.nav-right a[href="#cart"]');
+        let cartDropdownVisible = false;
+        let cartDropdown = null;
+
         if (cartIcon) {
             cartIcon.addEventListener('click', function(e) {
                 e.preventDefault();
-                renderCartPage();
+                if (cartDropdownVisible) {
+                    // Hide dropdown
+                    if (cartDropdown) {
+                        cartDropdown.remove();
+                        cartDropdown = null;
+                    }
+                    cartDropdownVisible = false;
+                } else {
+                    // Show dropdown
+                    renderCartPageInIcon();
+                    cartDropdownVisible = true;
+                }
             });
         }
 
@@ -2389,46 +2403,45 @@
         // Initialize event listeners on page load
         initializeEventListeners();
 
-        // Function to render cart page inside the cart icon area
+        // Add CSS for cart dropdown menu
+        const style = document.createElement('style');
+        style.textContent = `
+            .cart-dropdown {
+                position: absolute;
+                top: 50px;
+                right: 0;
+                width: 320px;
+                max-height: 400px;
+                overflow-y: auto;
+                background-color: white;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                padding: 15px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Update renderCartPageInIcon to use cartDropdown container
         function renderCartPageInIcon() {
-            // Clear cart icon content
-            cartIcon.innerHTML = '';
-
-            // Create back button to restore cart icon
-            const backBtn = document.createElement('button');
-            backBtn.textContent = 'Back';
-            backBtn.style.marginBottom = '10px';
-            backBtn.style.cursor = 'pointer';
-            backBtn.addEventListener('click', () => {
-                // Restore original cart icon content
-                cartIcon.innerHTML = '<i class="fas fa-shopping-bag"></i>';
-            });
-            cartIcon.appendChild(backBtn);
-
-            // Create container for cart page content
-            const cartPageDiv = document.createElement('div');
-            cartPageDiv.style.width = '300px';
-            cartPageDiv.style.maxHeight = '400px';
-            cartPageDiv.style.overflowY = 'auto';
-            cartPageDiv.style.backgroundColor = 'white';
-            cartPageDiv.style.border = '1px solid #ccc';
-            cartPageDiv.style.borderRadius = '10px';
-            cartPageDiv.style.padding = '10px';
-            cartPageDiv.style.position = 'absolute';
-            cartPageDiv.style.top = '50px';
-            cartPageDiv.style.right = '0';
-            cartPageDiv.style.zIndex = '10000';
+            if (cartDropdown) {
+                cartDropdown.remove();
+                cartDropdown = null;
+            }
+            cartDropdown = document.createElement('div');
+            cartDropdown.className = 'cart-dropdown';
 
             // Title
             const title = document.createElement('h3');
             title.textContent = 'Your Bag';
             title.style.marginBottom = '15px';
-            cartPageDiv.appendChild(title);
+            cartDropdown.appendChild(title);
 
             if (cart.length === 0) {
                 const emptyMsg = document.createElement('p');
                 emptyMsg.textContent = 'Your cart is empty.';
-                cartPageDiv.appendChild(emptyMsg);
+                cartDropdown.appendChild(emptyMsg);
             } else {
                 cart.forEach((item, index) => {
                     const itemDiv = document.createElement('div');
@@ -2522,7 +2535,7 @@
                     itemDiv.appendChild(totalPrice);
                     itemDiv.appendChild(removeLink);
 
-                    cartPageDiv.appendChild(itemDiv);
+                    cartDropdown.appendChild(itemDiv);
                 });
 
                 // Order summary
@@ -2598,10 +2611,10 @@
 
                 updateOrderSummary();
 
-                cartPageDiv.appendChild(orderSummary);
+                cartDropdown.appendChild(orderSummary);
             }
 
-            cartIcon.appendChild(cartPageDiv);
+            cartIcon.appendChild(cartDropdown);
         }
 
         // Function to render cart content inside cartContainer

@@ -2448,247 +2448,285 @@
             });
         }
 
-        // Profile icon click handler and profile page rendering
-        const profileIcon = document.querySelector('.nav-right a[href="#user"]');
+       // Profile icon click handler and profile page rendering
+const profileIcon = document.querySelector('.nav-right a[href="#user"]');
 
-        function renderProfilePage() {
-            mainWrapper.innerHTML = '';
+function renderProfilePage() {
+    mainWrapper.innerHTML = '';
 
-            const headerHTML = `
-                <header>
-                    <div class="container">
-                        <nav>
-                            <div class="nav-left">
-                                <div class="search-container">
-                                    <input type="text" placeholder="Search..." class="search-input">
-                                    <button class="search-btn"><i class="fas fa-search"></i></button>
-                                </div>
-                            </div>
-                            <div class="logo">YUJINSHOP</div>
-                            <div class="nav-right">
-                                <a href="#wishlist" class="nav-icon"><i class="far fa-heart"></i></a>
-                                <a href="#cart" class="nav-icon"><i class="fas fa-shopping-bag"></i></a>
-                                <a href="#chat" class="nav-icon"><i class="far fa-comment"></i></a>
-                                <a href="#user" class="nav-icon"><i class="far fa-user"></i></a>
-                            </div>
-                        </nav>
-                    </div>
-                    <div class="secondary-nav" id="nav-container">
-                        <div class="container">
-                            <ul class="nav-links">
-                                <li><a href="#home">Home</a></li>
-                                <li><a href="#about">About Us</a></li>
-                                <li><a href="#products">Product</a></li>
-                                <li><a href="#review">Review</a></li>
-                            </ul>
+    const headerHTML = `
+        <header>
+            <div class="container">
+                <nav>
+                    <div class="nav-left">
+                        <div class="search-container">
+                            <input type="text" placeholder="Search..." class="search-input">
+                            <button class="search-btn"><i class="fas fa-search"></i></button>
                         </div>
                     </div>
-                </header>
-            `;
+                    <div class="logo">YUJINSHOP</div>
+                    <div class="nav-right">
+                        <a href="#wishlist" class="nav-icon"><i class="far fa-heart"></i></a>
+                        <a href="#cart" class="nav-icon"><i class="fas fa-shopping-bag"></i></a>
+                        <a href="#chat" class="nav-icon"><i class="far fa-comment"></i></a>
+                        <a href="#user" class="nav-icon"><i class="far fa-user"></i></a>
+                    </div>
+                </nav>
+            </div>
+            <div class="secondary-nav" id="nav-container">
+                <div class="container">
+                    <ul class="nav-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#products">Product</a></li>
+                        <li><a href="#review">Review</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+    `;
 
-            mainWrapper.insertAdjacentHTML('beforeend', headerHTML);
+    mainWrapper.insertAdjacentHTML('beforeend', headerHTML);
 
-            const profileSection = document.createElement('section');
-            profileSection.style.padding = '40px';
-            profileSection.style.maxWidth = '1200px';
-            profileSection.style.margin = '0 auto';
-            profileSection.style.display = 'flex';
-            profileSection.style.gap = '40px';
+    const profileSection = document.createElement('section');
+    profileSection.style.padding = '40px';
+    profileSection.style.maxWidth = '1200px';
+    profileSection.style.margin = '0 auto';
+    profileSection.style.display = 'flex';
+    profileSection.style.gap = '40px';
 
-            // Left side: Image placeholder
-            const imageDiv = document.createElement('div');
-            imageDiv.style.flex = '1';
-            imageDiv.style.backgroundColor = '#ccc';
-            imageDiv.style.borderRadius = '30px';
-            imageDiv.style.minHeight = '300px';
-            imageDiv.style.display = 'flex';
-            imageDiv.style.alignItems = 'center';
-            imageDiv.style.justifyContent = 'center';
+    // Left side: Grey background with rounded corners and circle
+    const imageDiv = document.createElement('div');
+    imageDiv.style.flex = '1';
+    imageDiv.style.backgroundColor = '#b0b0b0'; // grey background
+    imageDiv.style.borderRadius = '30px';
+    imageDiv.style.minHeight = '400px';
+    imageDiv.style.display = 'flex';
+    imageDiv.style.alignItems = 'center';
+    imageDiv.style.justifyContent = 'center';
+    imageDiv.style.position = 'relative';
 
-            const imagePlaceholder = document.createElement('div');
-            imagePlaceholder.style.width = '150px';
-            imagePlaceholder.style.height = '150px';
-            imagePlaceholder.style.border = '2px solid #999';
-            imagePlaceholder.style.borderRadius = '50%';
-            imagePlaceholder.style.backgroundColor = '#eee';
+    const roundedRect = document.createElement('div');
+    roundedRect.style.width = '80%';
+    roundedRect.style.height = '80%';
+    roundedRect.style.border = '2px solid #888';
+    roundedRect.style.borderRadius = '40px';
+    roundedRect.style.position = 'relative';
+    roundedRect.style.display = 'flex';
+    roundedRect.style.alignItems = 'center';
+    roundedRect.style.justifyContent = 'center';
 
-            imageDiv.appendChild(imagePlaceholder);
+    const circle = document.createElement('div');
+    circle.style.width = '40%';
+    circle.style.height = '40%';
+    circle.style.border = '2px solid #888';
+    circle.style.borderRadius = '50%';
+    circle.style.position = 'absolute';
+    circle.style.top = '20%';
+    circle.style.left = '20%';
+    circle.style.backgroundColor = '#d0d0d0';
 
-            // Right side: Sign up form
-            const formDiv = document.createElement('div');
-            formDiv.style.flex = '1';
-            formDiv.style.backgroundColor = '#ccc';
-            formDiv.style.borderRadius = '20px';
-            formDiv.style.padding = '30px';
-            formDiv.style.display = 'flex';
-            formDiv.style.flexDirection = 'column';
+    roundedRect.appendChild(circle);
+    imageDiv.appendChild(roundedRect);
 
-            const title = document.createElement('h2');
-            title.textContent = 'Sign Up to YujinShop';
-            title.style.marginBottom = '30px';
-            title.style.fontWeight = '700';
-            formDiv.appendChild(title);
+    // Right side: Light grey background with rounded corners and padding
+    const formDiv = document.createElement('div');
+    formDiv.style.flex = '1';
+    formDiv.style.backgroundColor = '#e0e0e0'; // light grey background
+    formDiv.style.borderRadius = '20px';
+    formDiv.style.padding = '40px 30px';
+    formDiv.style.display = 'flex';
+    formDiv.style.flexDirection = 'column';
 
-            // Email input
-            const emailInput = document.createElement('input');
-            emailInput.type = 'email';
-            emailInput.placeholder = 'Email Address';
-            emailInput.style.width = '100%';
-            emailInput.style.padding = '12px';
-            emailInput.style.marginBottom = '20px';
-            emailInput.style.borderRadius = '25px';
-            emailInput.style.border = '1px solid #ccc';
-            formDiv.appendChild(emailInput);
+    // Title
+    const title = document.createElement('h2');
+    title.textContent = 'SIGN UP YUJINSHOP';
+    title.style.marginBottom = '30px';
+    title.style.fontWeight = '700';
+    title.style.fontSize = '20px';
+    formDiv.appendChild(title);
 
-            // Password input with toggle
-            const passwordWrapper = document.createElement('div');
-            passwordWrapper.style.position = 'relative';
-            passwordWrapper.style.marginBottom = '15px';
+    // Email input
+    const emailInput = document.createElement('input');
+    emailInput.type = 'email';
+    emailInput.placeholder = 'Your Email';
+    emailInput.style.width = '100%';
+    emailInput.style.padding = '12px 20px';
+    emailInput.style.marginBottom = '15px';
+    emailInput.style.borderRadius = '20px';
+    emailInput.style.border = 'none';
+    emailInput.style.fontSize = '14px';
+    formDiv.appendChild(emailInput);
 
-            const passwordInput = document.createElement('input');
+    // Password input with toggle
+    const passwordWrapper = document.createElement('div');
+    passwordWrapper.style.position = 'relative';
+    passwordWrapper.style.marginBottom = '15px';
+
+    const passwordInput = document.createElement('input');
+    passwordInput.type = 'password';
+    passwordInput.placeholder = 'Your Password';
+    passwordInput.style.width = '100%';
+    passwordInput.style.padding = '12px 20px';
+    passwordInput.style.borderRadius = '20px';
+    passwordInput.style.border = 'none';
+    passwordInput.style.fontSize = '14px';
+
+    const togglePasswordBtn = document.createElement('button');
+    togglePasswordBtn.type = 'button';
+    togglePasswordBtn.innerHTML = '<i class="far fa-eye"></i>';
+    togglePasswordBtn.style.position = 'absolute';
+    togglePasswordBtn.style.top = '50%';
+    togglePasswordBtn.style.right = '15px';
+    togglePasswordBtn.style.transform = 'translateY(-50%)';
+    togglePasswordBtn.style.background = 'none';
+    togglePasswordBtn.style.border = 'none';
+    togglePasswordBtn.style.cursor = 'pointer';
+    togglePasswordBtn.style.fontSize = '18px';
+    togglePasswordBtn.style.color = '#555';
+
+    togglePasswordBtn.addEventListener('click', () => {
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            togglePasswordBtn.innerHTML = '<i class="far fa-eye-slash"></i>';
+        } else {
             passwordInput.type = 'password';
-            passwordInput.placeholder = 'Password';
-            passwordInput.style.width = '100%';
-
-            const togglePasswordBtn = document.createElement('button');
-            togglePasswordBtn.type = 'button';
             togglePasswordBtn.innerHTML = '<i class="far fa-eye"></i>';
-            togglePasswordBtn.style.position = 'absolute';
-            togglePasswordBtn.style.top = '50%';
-            togglePasswordBtn.style.right = '15px';
-            togglePasswordBtn.style.transform = 'translateY(-50%)';
-            togglePasswordBtn.style.background = 'none';
-            togglePasswordBtn.style.border = 'none';
-            togglePasswordBtn.style.cursor = 'pointer';
-            togglePasswordBtn.style.fontSize = '18px';
-            togglePasswordBtn.style.color = '#555';
+        }
+    });
 
-            togglePasswordBtn.addEventListener('click', () => {
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    togglePasswordBtn.innerHTML = '<i class="far fa-eye-slash"></i>';
-                } else {
-                    passwordInput.type = 'password';
-                    togglePasswordBtn.innerHTML = '<i class="far fa-eye"></i>';
-                }
-            });
+    passwordWrapper.appendChild(passwordInput);
+    passwordWrapper.appendChild(togglePasswordBtn);
+    formDiv.appendChild(passwordWrapper);
 
-            passwordWrapper.appendChild(passwordInput);
-            passwordWrapper.appendChild(togglePasswordBtn);
-            formDiv.appendChild(passwordWrapper);
+    // Repeat password input with toggle
+    const repeatPasswordWrapper = document.createElement('div');
+    repeatPasswordWrapper.style.position = 'relative';
+    repeatPasswordWrapper.style.marginBottom = '15px';
 
-            // Repeat password input with toggle
-            const repeatPasswordWrapper = document.createElement('div');
-            repeatPasswordWrapper.style.position = 'relative';
-            repeatPasswordWrapper.style.marginBottom = '15px';
+    const repeatPasswordInput = document.createElement('input');
+    repeatPasswordInput.type = 'password';
+    repeatPasswordInput.placeholder = 'Repeat Password';
+    repeatPasswordInput.style.width = '100%';
+    repeatPasswordInput.style.padding = '12px 20px';
+    repeatPasswordInput.style.borderRadius = '20px';
+    repeatPasswordInput.style.border = 'none';
+    repeatPasswordInput.style.fontSize = '14px';
 
-            const repeatPasswordInput = document.createElement('input');
+    const toggleRepeatPasswordBtn = document.createElement('button');
+    toggleRepeatPasswordBtn.type = 'button';
+    toggleRepeatPasswordBtn.innerHTML = '<i class="far fa-eye"></i>';
+    toggleRepeatPasswordBtn.style.position = 'absolute';
+    toggleRepeatPasswordBtn.style.top = '50%';
+    toggleRepeatPasswordBtn.style.right = '15px';
+    toggleRepeatPasswordBtn.style.transform = 'translateY(-50%)';
+    toggleRepeatPasswordBtn.style.background = 'none';
+    toggleRepeatPasswordBtn.style.border = 'none';
+    toggleRepeatPasswordBtn.style.cursor = 'pointer';
+    toggleRepeatPasswordBtn.style.fontSize = '18px';
+    toggleRepeatPasswordBtn.style.color = '#555';
+
+    toggleRepeatPasswordBtn.addEventListener('click', () => {
+        if (repeatPasswordInput.type === 'password') {
+            repeatPasswordInput.type = 'text';
+            toggleRepeatPasswordBtn.innerHTML = '<i class="far fa-eye-slash"></i>';
+        } else {
             repeatPasswordInput.type = 'password';
-            repeatPasswordInput.placeholder = 'Repeat Password';
-            repeatPasswordInput.style.padding = '12px 40px 12px 20px';
-            repeatPasswordInput.style.borderRadius = '20px';
-            repeatPasswordInput.style.border = 'none';
-            repeatPasswordInput.style.fontSize = '16px';
-            repeatPasswordInput.style.width = '100%';
-
-            const toggleRepeatPasswordBtn = document.createElement('button');
-            toggleRepeatPasswordBtn.type = 'button';
             toggleRepeatPasswordBtn.innerHTML = '<i class="far fa-eye"></i>';
-            toggleRepeatPasswordBtn.style.position = 'absolute';
-            toggleRepeatPasswordBtn.style.top = '50%';
-            toggleRepeatPasswordBtn.style.right = '15px';
-            toggleRepeatPasswordBtn.style.transform = 'translateY(-50%)';
-            toggleRepeatPasswordBtn.style.background = 'none';
-            toggleRepeatPasswordBtn.style.border = 'none';
-            toggleRepeatPasswordBtn.style.cursor = 'pointer';
-            toggleRepeatPasswordBtn.style.fontSize = '18px';
-            toggleRepeatPasswordBtn.style.color = '#555';
-
-            toggleRepeatPasswordBtn.addEventListener('click', () => {
-                if (repeatPasswordInput.type === 'password') {
-                    repeatPasswordInput.type = 'text';
-                    toggleRepeatPasswordBtn.innerHTML = '<i class="far fa-eye-slash"></i>';
-                } else {
-                    repeatPasswordInput.type = 'password';
-                    toggleRepeatPasswordBtn.innerHTML = '<i class="far fa-eye"></i>';
-                }
-            });
-
-            repeatPasswordWrapper.appendChild(repeatPasswordInput);
-            repeatPasswordWrapper.appendChild(toggleRepeatPasswordBtn);
-            formDiv.appendChild(repeatPasswordWrapper);
-
-            // Password info text
-            const passwordInfo = document.createElement('p');
-            passwordInfo.textContent = 'Create a password with 8+ characters to set up your account securely!';
-            passwordInfo.style.fontSize = '14px';
-            passwordInfo.style.marginBottom = '20px';
-            formDiv.appendChild(passwordInfo);
-
-            // Or separator
-            const orSeparator = document.createElement('div');
-            orSeparator.style.display = 'flex';
-            orSeparator.style.alignItems = 'center';
-            orSeparator.style.marginBottom = '20px';
-
-            const lineLeft = document.createElement('div');
-            lineLeft.style.flex = '1';
-            lineLeft.style.height = '1px';
-            lineLeft.style.backgroundColor = '#999';
-
-            const orText = document.createElement('span');
-            orText.textContent = 'Or';
-            orText.style.margin = '0 10px';
-            orText.style.color = '#555';
-
-            const lineRight = document.createElement('div');
-            lineRight.style.flex = '1';
-            lineRight.style.height = '1px';
-            lineRight.style.backgroundColor = '#999';
-
-            orSeparator.appendChild(lineLeft);
-            orSeparator.appendChild(orText);
-            orSeparator.appendChild(lineRight);
-            formDiv.appendChild(orSeparator);
-
-            // Google sign up button
-            const googleBtn = document.createElement('button');
-            googleBtn.textContent = 'Sign Up with Google';
-            googleBtn.style.width = '100%';
-            googleBtn.style.padding = '12px';
-            googleBtn.style.backgroundColor = '#db4437';
-            googleBtn.style.color = 'white';
-            googleBtn.style.border = 'none';
-            googleBtn.style.borderRadius = '10px';
-            googleBtn.style.padding = '12px';
-            googleBtn.style.cursor = 'pointer';
-            googleBtn.style.marginBottom = '20px';
-            formDiv.appendChild(googleBtn);
-
-            // Login link
-            const loginLink = document.createElement('p');
-            loginLink.innerHTML = 'Already have an account? <a href="#" id="login-link">Login</a>';
-            loginLink.style.textAlign = 'center';
-            loginLink.style.color = '#395144';
-            loginLink.style.fontWeight = '600';
-            rightSide.appendChild(loginLink);
-
-            loginText.textContent = 'Already registered? ';
-            loginText.appendChild(loginLink);
-            formDiv.appendChild(loginText);
-
-            profileSection.appendChild(imageDiv);
-            profileSection.appendChild(formDiv);
-
-            mainWrapper.appendChild(profileSection);
         }
+    });
 
-        if (profileIcon) {
-            profileIcon.addEventListener('click', function(e) {
-                e.preventDefault();
-                renderProfilePage();
-            });
-        }
+    repeatPasswordWrapper.appendChild(repeatPasswordInput);
+    repeatPasswordWrapper.appendChild(toggleRepeatPasswordBtn);
+    formDiv.appendChild(repeatPasswordWrapper);
+
+    // Password info text
+    const passwordInfo = document.createElement('p');
+    passwordInfo.textContent = 'Create a password with 8+ characters to set up your account securely!';
+    passwordInfo.style.fontSize = '12px';
+    passwordInfo.style.marginBottom = '20px';
+    passwordInfo.style.color = '#333';
+    formDiv.appendChild(passwordInfo);
+
+    // Or separator
+    const orSeparator = document.createElement('div');
+    orSeparator.style.display = 'flex';
+    orSeparator.style.alignItems = 'center';
+    orSeparator.style.marginBottom = '20px';
+
+    const lineLeft = document.createElement('div');
+    lineLeft.style.flex = '1';
+    lineLeft.style.height = '1px';
+    lineLeft.style.backgroundColor = '#999';
+
+    const orText = document.createElement('span');
+    orText.textContent = 'Or';
+    orText.style.margin = '0 10px';
+    orText.style.color = '#555';
+
+    const lineRight = document.createElement('div');
+    lineRight.style.flex = '1';
+    lineRight.style.height = '1px';
+    lineRight.style.backgroundColor = '#999';
+
+    orSeparator.appendChild(lineLeft);
+    orSeparator.appendChild(orText);
+    orSeparator.appendChild(lineRight);
+    formDiv.appendChild(orSeparator);
+
+    // Google sign up button with Google "G" icon
+    const googleBtn = document.createElement('button');
+    googleBtn.style.width = '100%';
+    googleBtn.style.padding = '12px';
+    googleBtn.style.backgroundColor = '#db4437';
+    googleBtn.style.color = 'white';
+    googleBtn.style.border = 'none';
+    googleBtn.style.borderRadius = '10px';
+    googleBtn.style.cursor = 'pointer';
+    googleBtn.style.marginBottom = '20px';
+    googleBtn.style.display = 'flex';
+    googleBtn.style.alignItems = 'center';
+    googleBtn.style.justifyContent = 'center';
+    googleBtn.style.gap = '10px';
+
+    const googleIcon = document.createElement('span');
+    googleIcon.textContent = 'G';
+    googleIcon.style.fontWeight = '700';
+    googleIcon.style.fontSize = '18px';
+    googleIcon.style.backgroundColor = 'white';
+    googleIcon.style.color = '#db4437';
+    googleIcon.style.borderRadius = '3px';
+    googleIcon.style.padding = '2px 6px';
+    googleBtn.appendChild(googleIcon);
+
+    const googleText = document.createElement('span');
+    googleText.textContent = 'Sign up with Google';
+    googleBtn.appendChild(googleText);
+
+    formDiv.appendChild(googleBtn);
+
+    // Already registered? Log in link
+    const loginText = document.createElement('p');
+    loginText.style.textAlign = 'center';
+    loginText.style.color = '#395144';
+    loginText.style.fontWeight = '600';
+
+    loginText.innerHTML = 'Already registered? <a href="#" style="color: #4a67a1; text-decoration: underline;">Log in</a>';
+    formDiv.appendChild(loginText);
+
+    profileSection.appendChild(imageDiv);
+    profileSection.appendChild(formDiv);
+
+    mainWrapper.appendChild(profileSection);
+}
+
+if (profileIcon) {
+    profileIcon.addEventListener('click', function(e) {
+        e.preventDefault();
+        renderProfilePage();
+    });
+}
+
 
         // Add a back button inside cart page to return to home section
         function addBackButton() {

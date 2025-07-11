@@ -2745,7 +2745,292 @@ if (profileIcon) {
             });
             return backBtn;
         }
-    }); // <-- Add this closing curly brace and semicolon for DOMContentLoaded
+
+        // Cart icon click handler and cart page rendering
+const cartIcon = document.querySelector('.nav-right a[href="#cart"]');
+
+function renderCartPage() {
+    mainWrapper.innerHTML = '';
+
+    const headerHTML = `
+        <header>
+            <div class="container">
+                <nav>
+                    <div class="nav-left">
+                        <div class="search-container">
+                            <input type="text" placeholder="Search..." class="search-input">
+                            <button class="search-btn"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="logo">YUJINSHOP</div>
+                    <div class="nav-right">
+                        <a href="#wishlist" class="nav-icon"><i class="far fa-heart"></i></a>
+                        <a href="#cart" class="nav-icon"><i class="fas fa-shopping-bag"></i></a>
+                        <a href="#chat" class="nav-icon"><i class="far fa-comment"></i></a>
+                        <a href="#user" class="nav-icon"><i class="far fa-user"></i></a>
+                    </div>
+                </nav>
+            </div>
+            <div class="secondary-nav" id="nav-container">
+                <div class="container">
+                    <ul class="nav-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#products">Product</a></li>
+                        <li><a href="#review">Review</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+    `;
+
+    mainWrapper.insertAdjacentHTML('beforeend', headerHTML);
+
+    const cartSection = document.createElement('section');
+    cartSection.style.padding = '40px';
+    cartSection.style.maxWidth = '1200px';
+    cartSection.style.margin = '0 auto';
+    cartSection.style.display = 'flex';
+    cartSection.style.gap = '40px';
+
+    // Left side: Your Bag section
+    const yourBagDiv = document.createElement('div');
+    yourBagDiv.style.flex = '1';
+    yourBagDiv.style.display = 'flex';
+    yourBagDiv.style.flexDirection = 'column';
+
+    const yourBagTitle = document.createElement('h2');
+    yourBagTitle.textContent = 'Your Bag';
+    yourBagTitle.style.fontWeight = '700';
+    yourBagTitle.style.marginBottom = '20px';
+    yourBagDiv.appendChild(yourBagTitle);
+
+    // Product container
+    const productContainer = document.createElement('div');
+    productContainer.style.display = 'flex';
+    productContainer.style.alignItems = 'center';
+    productContainer.style.gap = '20px';
+    productContainer.style.marginBottom = '20px';
+
+    // Product image placeholder
+    const productImage = document.createElement('div');
+    productImage.style.width = '150px';
+    productImage.style.height = '150px';
+    productImage.style.backgroundColor = '#ccc';
+    productImage.style.borderRadius = '20px';
+    productContainer.appendChild(productImage);
+
+    // Product details container
+    const productDetails = document.createElement('div');
+    productDetails.style.flex = '1';
+    productDetails.style.display = 'flex';
+    productDetails.style.flexDirection = 'column';
+
+    // Product name and quantity/total container
+    const nameQtyTotalContainer = document.createElement('div');
+    nameQtyTotalContainer.style.display = 'flex';
+    nameQtyTotalContainer.style.justifyContent = 'space-between';
+    nameQtyTotalContainer.style.alignItems = 'center';
+
+    // Product name
+    const productName = document.createElement('h3');
+    productName.textContent = 'Product Name';
+    productName.style.fontWeight = '700';
+    productName.style.margin = '0';
+    nameQtyTotalContainer.appendChild(productName);
+
+    // Quantity and total container
+    const qtyTotalContainer = document.createElement('div');
+    qtyTotalContainer.style.display = 'flex';
+    qtyTotalContainer.style.alignItems = 'center';
+    qtyTotalContainer.style.gap = '20px';
+
+    // Quantity controls
+    const quantityContainer = document.createElement('div');
+    quantityContainer.style.display = 'flex';
+    quantityContainer.style.alignItems = 'center';
+    quantityContainer.style.gap = '10px';
+
+    const quantityLabel = document.createElement('span');
+    quantityLabel.textContent = 'Quantity';
+    quantityLabel.style.fontWeight = '600';
+    quantityContainer.appendChild(quantityLabel);
+
+    const minusBtn = document.createElement('button');
+    minusBtn.textContent = '-';
+    minusBtn.style.width = '30px';
+    minusBtn.style.height = '30px';
+    minusBtn.style.border = '1px solid #ccc';
+    minusBtn.style.borderRadius = '5px';
+    minusBtn.style.background = 'white';
+    minusBtn.style.cursor = 'pointer';
+    quantityContainer.appendChild(minusBtn);
+
+    const quantityValue = document.createElement('span');
+    quantityValue.textContent = '2';
+    quantityValue.style.minWidth = '25px';
+    quantityValue.style.textAlign = 'center';
+    quantityContainer.appendChild(quantityValue);
+
+    const plusBtn = document.createElement('button');
+    plusBtn.textContent = '+';
+    plusBtn.style.width = '30px';
+    plusBtn.style.height = '30px';
+    plusBtn.style.border = '1px solid #ccc';
+    plusBtn.style.borderRadius = '5px';
+    plusBtn.style.background = 'white';
+    plusBtn.style.cursor = 'pointer';
+    quantityContainer.appendChild(plusBtn);
+
+    qtyTotalContainer.appendChild(quantityContainer);
+
+    // Total price
+    const totalPrice = document.createElement('span');
+    totalPrice.textContent = '$22.5';
+    totalPrice.style.fontWeight = '700';
+    qtyTotalContainer.appendChild(totalPrice);
+
+    nameQtyTotalContainer.appendChild(qtyTotalContainer);
+
+    productDetails.appendChild(nameQtyTotalContainer);
+
+    // Remove link
+    const removeLink = document.createElement('a');
+    removeLink.textContent = 'Remove';
+    removeLink.style.color = '#000';
+    removeLink.style.fontSize = '12px';
+    removeLink.style.alignSelf = 'flex-end';
+    removeLink.style.cursor = 'pointer';
+    productDetails.appendChild(removeLink);
+
+    productContainer.appendChild(productDetails);
+
+    yourBagDiv.appendChild(productContainer);
+
+    // Right side: Order Summary section
+    const orderSummaryDiv = document.createElement('div');
+    orderSummaryDiv.style.flex = '1';
+    orderSummaryDiv.style.backgroundColor = '#e0e0e0';
+    orderSummaryDiv.style.borderRadius = '20px';
+    orderSummaryDiv.style.padding = '30px';
+    orderSummaryDiv.style.display = 'flex';
+    orderSummaryDiv.style.flexDirection = 'column';
+
+    const orderSummaryTitle = document.createElement('h2');
+    orderSummaryTitle.textContent = 'Order Summary';
+    orderSummaryTitle.style.fontWeight = '700';
+    orderSummaryTitle.style.marginBottom = '20px';
+    orderSummaryDiv.appendChild(orderSummaryTitle);
+
+    // Subtotal
+    const subtotalDiv = document.createElement('div');
+    subtotalDiv.style.display = 'flex';
+    subtotalDiv.style.justifyContent = 'space-between';
+    subtotalDiv.style.marginBottom = '10px';
+
+    const subtotalLabel = document.createElement('span');
+    subtotalLabel.textContent = 'Subtotal(2 items)';
+    subtotalDiv.appendChild(subtotalLabel);
+
+    const subtotalValue = document.createElement('span');
+    subtotalValue.textContent = '$45';
+    subtotalDiv.appendChild(subtotalValue);
+
+    orderSummaryDiv.appendChild(subtotalDiv);
+
+    // Shipping info
+    const shippingInfoDiv = document.createElement('div');
+    shippingInfoDiv.style.backgroundColor = '#fff';
+    shippingInfoDiv.style.padding = '10px';
+    shippingInfoDiv.style.borderRadius = '10px';
+    shippingInfoDiv.style.textAlign = 'center';
+    shippingInfoDiv.style.marginBottom = '10px';
+    shippingInfoDiv.textContent = '$10 free shipping';
+    orderSummaryDiv.appendChild(shippingInfoDiv);
+
+    // Taxes
+    const taxesDiv = document.createElement('div');
+    taxesDiv.style.display = 'flex';
+    taxesDiv.style.justifyContent = 'space-between';
+    taxesDiv.style.marginBottom = '10px';
+
+    const taxesLabel = document.createElement('span');
+    taxesLabel.textContent = 'Taxes';
+    taxesDiv.appendChild(taxesLabel);
+
+    const taxesValue = document.createElement('span');
+    taxesValue.textContent = 'TBD';
+    taxesDiv.appendChild(taxesValue);
+
+    orderSummaryDiv.appendChild(taxesDiv);
+
+    // Estimated total
+    const estimatedTotalDiv = document.createElement('div');
+    estimatedTotalDiv.style.display = 'flex';
+    estimatedTotalDiv.style.justifyContent = 'space-between';
+    estimatedTotalDiv.style.marginBottom = '20px';
+
+    const estimatedTotalLabel = document.createElement('span');
+    estimatedTotalLabel.textContent = 'Estimated total';
+    estimatedTotalLabel.style.fontWeight = '700';
+    estimatedTotalDiv.appendChild(estimatedTotalLabel);
+
+    const estimatedTotalValue = document.createElement('span');
+    estimatedTotalValue.textContent = '$35';
+    estimatedTotalValue.style.fontWeight = '700';
+    estimatedTotalDiv.appendChild(estimatedTotalValue);
+
+    orderSummaryDiv.appendChild(estimatedTotalDiv);
+
+    // Payment buttons
+    const paymentMethods = ['Paypal', 'Mandiri', 'Dana', 'BCA'];
+    paymentMethods.forEach(method => {
+        const btn = document.createElement('button');
+        btn.textContent = method;
+        btn.style.width = '100%';
+        btn.style.padding = '12px';
+        btn.style.marginBottom = '10px';
+        btn.style.border = 'none';
+        btn.style.borderRadius = '10px';
+        btn.style.backgroundColor = '#999';
+        btn.style.color = 'white';
+        btn.style.cursor = 'pointer';
+        orderSummaryDiv.appendChild(btn);
+    });
+
+    cartSection.appendChild(yourBagDiv);
+    cartSection.appendChild(orderSummaryDiv);
+
+    // Shipping & Return Information section
+    const shippingReturnDiv = document.createElement('div');
+    shippingReturnDiv.style.backgroundColor = '#f0f0f0';
+    shippingReturnDiv.style.borderRadius = '10px';
+    shippingReturnDiv.style.padding = '20px';
+    shippingReturnDiv.style.marginTop = '30px';
+
+    const shippingReturnTitle = document.createElement('h3');
+    shippingReturnTitle.textContent = 'Shipping & Return Information';
+    shippingReturnTitle.style.fontWeight = '700';
+    shippingReturnTitle.style.marginBottom = '10px';
+    shippingReturnDiv.appendChild(shippingReturnTitle);
+
+    const shippingReturnText = document.createElement('p');
+    shippingReturnText.style.fontSize = '14px';
+    shippingReturnText.style.color = '#333';
+    shippingReturnText.textContent = 'Eco Strawbag products will be shipped within 1–3 business days after payment is confirmed. We use trusted shipping services such as JNE, J&T, or Sicepat. The estimated delivery time is 2–5 business days depending on the destination. Free shipping promotions are available for certain purchases. If you receive a product that is damaged, defective, or does not match your order, you may request a return within 7 days of receiving the item. Please ensure the product is unused, the original tags are still attached, and it is returned in its original packaging. Return shipping costs are the responsibility of the buyer, unless the error was on our part.';
+    shippingReturnDiv.appendChild(shippingReturnText);
+
+    mainWrapper.appendChild(cartSection);
+    mainWrapper.appendChild(shippingReturnDiv);
+}
+
+if (cartIcon) {
+    cartIcon.addEventListener('click', function(e) {
+        e.preventDefault();
+        renderCartPage();
+    });
+}
+        }
     </script>
 </body>
 </html>

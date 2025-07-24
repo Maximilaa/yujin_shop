@@ -2,8 +2,14 @@
   "version": 2,
   "name": "yujin-eco-strawbag",
   "builds": [
-     { "src": "index.html", "use": "@vercel/static" },
-      { "src": "image/**", "use": "@vercel/static" }
+     {
+      "src": "/image/(.*)",
+      "dest": "/image/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "index.html"
+    }
   ],
   "routes": [
     {

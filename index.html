@@ -2239,7 +2239,7 @@
                         if ((item.quantity || 1) > 1) {
                             item.quantity = (item.quantity || 1) - 1;
                             quantityValue.textContent = item.quantity;
-                            renderWishlistPage();
+                                                       renderWishlistPage();
                         }
                     });
 
@@ -2807,107 +2807,128 @@ function renderCartPage() {
     yourBagTitle.style.marginBottom = '20px';
     yourBagDiv.appendChild(yourBagTitle);
 
-    // Product container
-    const productContainer = document.createElement('div');
-    productContainer.style.display = 'flex';
-    productContainer.style.alignItems = 'center';
-    productContainer.style.gap = '20px';
-    productContainer.style.marginBottom = '20px';
+    // Jika cart kosong
+    if (cart.length === 0) {
+        const emptyMsg = document.createElement('p');
+        emptyMsg.textContent = 'Your cart is empty.';
+        yourBagDiv.appendChild(emptyMsg);
+    } else {
+        cart.forEach((item, idx) => {
+            const productContainer = document.createElement('div');
+            productContainer.style.display = 'flex';
+            productContainer.style.alignItems = 'center';
+            productContainer.style.gap = '20px';
+            productContainer.style.marginBottom = '20px';
 
-    // Product image placeholder
-    const productImage = document.createElement('div');
-    productImage.style.width = '150px';
-    productImage.style.height = '150px';
-    productImage.style.backgroundColor = '#ccc';
-    productImage.style.borderRadius = '20px';
-    productContainer.appendChild(productImage);
+            const productImage = document.createElement('img');
+            productImage.src = item.image;
+            productImage.style.width = '150px';
+            productImage.style.height = '150px';
+            productImage.style.objectFit = 'cover';
+            productImage.style.borderRadius = '20px';
+            productContainer.appendChild(productImage);
 
-    // Product details container
-    const productDetails = document.createElement('div');
-    productDetails.style.flex = '1';
-    productDetails.style.display = 'flex';
-    productDetails.style.flexDirection = 'column';
+            const productDetails = document.createElement('div');
+            productDetails.style.flex = '1';
+            productDetails.style.display = 'flex';
+            productDetails.style.flexDirection = 'column';
 
-    // Product name and quantity/total container
-    const nameQtyTotalContainer = document.createElement('div');
-    nameQtyTotalContainer.style.display = 'flex';
-    nameQtyTotalContainer.style.justifyContent = 'space-between';
-    nameQtyTotalContainer.style.alignItems = 'center';
+            const nameQtyTotalContainer = document.createElement('div');
+            nameQtyTotalContainer.style.display = 'flex';
+            nameQtyTotalContainer.style.justifyContent = 'space-between';
+            nameQtyTotalContainer.style.alignItems = 'center';
 
-    // Product name
-    const productName = document.createElement('h3');
-    productName.textContent = 'Product Name';
-    productName.style.fontWeight = '700';
-    productName.style.margin = '0';
-    nameQtyTotalContainer.appendChild(productName);
+            const productName = document.createElement('h3');
+            productName.textContent = item.title;
+            productName.style.fontWeight = '700';
+            productName.style.margin = '0';
+            nameQtyTotalContainer.appendChild(productName);
 
-    // Quantity and total container
-    const qtyTotalContainer = document.createElement('div');
-    qtyTotalContainer.style.display = 'flex';
-    qtyTotalContainer.style.alignItems = 'center';
-    qtyTotalContainer.style.gap = '20px';
+            const qtyTotalContainer = document.createElement('div');
+            qtyTotalContainer.style.display = 'flex';
+            qtyTotalContainer.style.alignItems = 'center';
+            qtyTotalContainer.style.gap = '20px';
 
-    // Quantity controls
-    const quantityContainer = document.createElement('div');
-    quantityContainer.style.display = 'flex';
-    quantityContainer.style.alignItems = 'center';
-    quantityContainer.style.gap = '10px';
+            // Quantity controls
+            const quantityContainer = document.createElement('div');
+            quantityContainer.style.display = 'flex';
+            quantityContainer.style.alignItems = 'center';
+            quantityContainer.style.gap = '10px';
 
-    const quantityLabel = document.createElement('span');
-    quantityLabel.textContent = 'Quantity';
-    quantityLabel.style.fontWeight = '600';
-    quantityContainer.appendChild(quantityLabel);
+            const quantityLabel = document.createElement('span');
+            quantityLabel.textContent = 'Quantity';
+            quantityLabel.style.fontWeight = '600';
+            quantityContainer.appendChild(quantityLabel);
 
-    const minusBtn = document.createElement('button');
-    minusBtn.textContent = '-';
-    minusBtn.style.width = '30px';
-    minusBtn.style.height = '30px';
-    minusBtn.style.border = '1px solid #ccc';
-    minusBtn.style.borderRadius = '5px';
-    minusBtn.style.background = 'white';
-    minusBtn.style.cursor = 'pointer';
-    quantityContainer.appendChild(minusBtn);
+            const minusBtn = document.createElement('button');
+            minusBtn.textContent = '-';
+            minusBtn.style.width = '30px';
+            minusBtn.style.height = '30px';
+            minusBtn.style.border = '1px solid #ccc';
+            minusBtn.style.borderRadius = '5px';
+            minusBtn.style.background = 'white';
+            minusBtn.style.cursor = 'pointer';
 
-    const quantityValue = document.createElement('span');
-    quantityValue.textContent = '2';
-    quantityValue.style.minWidth = '25px';
-    quantityValue.style.textAlign = 'center';
-    quantityContainer.appendChild(quantityValue);
+            const quantityValue = document.createElement('span');
+            quantityValue.textContent = item.quantity;
+            quantityValue.style.minWidth = '25px';
+            quantityValue.style.textAlign = 'center';
 
-    const plusBtn = document.createElement('button');
-    plusBtn.textContent = '+';
-    plusBtn.style.width = '30px';
-    plusBtn.style.height = '30px';
-    plusBtn.style.border = '1px solid #ccc';
-    plusBtn.style.borderRadius = '5px';
-    plusBtn.style.background = 'white';
-    plusBtn.style.cursor = 'pointer';
-    quantityContainer.appendChild(plusBtn);
+            const plusBtn = document.createElement('button');
+            plusBtn.textContent = '+';
+            plusBtn.style.width = '30px';
+            plusBtn.style.height = '30px';
+            plusBtn.style.border = '1px solid #ccc';
+            plusBtn.style.borderRadius = '5px';
+            plusBtn.style.background = 'white';
+            plusBtn.style.cursor = 'pointer';
 
-    qtyTotalContainer.appendChild(quantityContainer);
+            quantityContainer.appendChild(minusBtn);
+            quantityContainer.appendChild(quantityValue);
+            quantityContainer.appendChild(plusBtn);
 
-    // Total price
-    const totalPrice = document.createElement('span');
-    totalPrice.textContent = '$22.5';
-    totalPrice.style.fontWeight = '700';
-    qtyTotalContainer.appendChild(totalPrice);
+            qtyTotalContainer.appendChild(quantityContainer);
 
-    nameQtyTotalContainer.appendChild(qtyTotalContainer);
+            // Total price
+            const priceNumber = parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0;
+            const totalPrice = document.createElement('span');
+            totalPrice.textContent = '$' + (priceNumber * item.quantity).toFixed(2);
+            totalPrice.style.fontWeight = '700';
+            qtyTotalContainer.appendChild(totalPrice);
 
-    productDetails.appendChild(nameQtyTotalContainer);
+            nameQtyTotalContainer.appendChild(qtyTotalContainer);
 
-    // Remove link
-    const removeLink = document.createElement('a');
-    removeLink.textContent = 'Remove';
-    removeLink.style.color = '#000';
-    removeLink.style.fontSize = '12px';
-    removeLink.style.alignSelf = 'flex-end';
-    removeLink.style.cursor = 'pointer';
-    productDetails.appendChild(removeLink);
+            productDetails.appendChild(nameQtyTotalContainer);
 
-    productContainer.appendChild(productDetails);
+            // Remove link
+            const removeLink = document.createElement('a');
+            removeLink.textContent = 'Remove';
+            removeLink.style.color = '#000';
+            removeLink.style.fontSize = '12px';
+            removeLink.style.alignSelf = 'flex-end';
+            removeLink.style.cursor = 'pointer';
+            productDetails.appendChild(removeLink);
 
-    yourBagDiv.appendChild(productContainer);
+            productContainer.appendChild(productDetails);
+            yourBagDiv.appendChild(productContainer);
+
+            // Quantity button events
+            minusBtn.addEventListener('click', () => {
+                if (item.quantity > 1) {
+                    item.quantity -= 1;
+                    renderCartPage();
+                }
+            });
+            plusBtn.addEventListener('click', () => {
+                item.quantity += 1;
+                renderCartPage();
+            });
+            removeLink.addEventListener('click', () => {
+                cart.splice(idx, 1);
+                renderCartPage();
+            });
+        });
+    }
 
     // Right side: Order Summary section
     const orderSummaryDiv = document.createElement('div');
@@ -2931,11 +2952,12 @@ function renderCartPage() {
     subtotalDiv.style.marginBottom = '10px';
 
     const subtotalLabel = document.createElement('span');
-    subtotalLabel.textContent = 'Subtotal(2 items)';
+    subtotalLabel.textContent = `Subtotal(${cart.reduce((sum, item) => sum + item.quantity, 0)} items)`;
     subtotalDiv.appendChild(subtotalLabel);
 
     const subtotalValue = document.createElement('span');
-    subtotalValue.textContent = '$45';
+    const subtotal = cart.reduce((sum, item) => sum + (parseFloat(item.price.replace(/[^0-9.-]+/g,"")) || 0) * item.quantity, 0);
+    subtotalValue.textContent = '$' + subtotal.toFixed(2);
     subtotalDiv.appendChild(subtotalValue);
 
     orderSummaryDiv.appendChild(subtotalDiv);
@@ -2978,7 +3000,7 @@ function renderCartPage() {
     estimatedTotalDiv.appendChild(estimatedTotalLabel);
 
     const estimatedTotalValue = document.createElement('span');
-    estimatedTotalValue.textContent = '$35';
+    estimatedTotalValue.textContent = '$' + (subtotal + 10).toFixed(2); // subtotal + shipping
     estimatedTotalValue.style.fontWeight = '700';
     estimatedTotalDiv.appendChild(estimatedTotalValue);
 
@@ -3026,6 +3048,7 @@ function renderCartPage() {
     mainWrapper.appendChild(shippingReturnDiv);
 }
 
+// Pastikan event listener cartIcon tetap memanggil renderCartPage
 if (cartIcon) {
     cartIcon.addEventListener('click', function(e) {
         e.preventDefault();

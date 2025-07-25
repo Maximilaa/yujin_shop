@@ -1,16 +1,7 @@
 {
   "version": 2,
   "name": "yujin-eco-strawbag",
-  "builds": [
-     {
-      "src": "/image/(.*)",
-      "dest": "/image/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "index.html"
-    }
-  ],
+  "builds": [],
   "routes": [
     {
       "src": "/(.*)",

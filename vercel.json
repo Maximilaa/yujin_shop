@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "name": "yujin-eco-strawbag",
-  "builds": [],
   "routes": [
     {
+      "src": "/image/(.*)",
+      "dest": "/image/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "index.html"
     }
   ]
 }
